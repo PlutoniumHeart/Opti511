@@ -4,6 +4,7 @@
 SobelEdge::SobelEdge()
 	: BaseImage()
     , m_ppEdgeMap(NULL)
+    , m_ppOriginalEdgeMap(NULL)
     , m_lPointerOffset(0)
     , m_fUpperThreshold(0.0)
 	, m_fLowerThreshold(0.0)
@@ -42,6 +43,7 @@ SobelEdge::SobelEdge()
 SobelEdge::SobelEdge(std::string filename)
     : BaseImage(filename, -1, -1)
     , m_ppEdgeMap(NULL)
+    , m_ppOriginalEdgeMap(NULL)
     , m_lPointerOffset(0)
     , m_fUpperThreshold(0.0)
 	, m_fLowerThreshold(0.0)
@@ -84,6 +86,12 @@ SobelEdge::~SobelEdge()
     {
         free(m_ppEdgeMap);
     }
+
+    m_ppOriginalEdgeMap += m_lPointerOffset;
+    if(m_ppOriginalEdgeMap != NULL)
+    {
+        free(m_ppOriginalEdgeMap);
+    }
 }
 
 
@@ -104,6 +112,10 @@ void SobelEdge::Filter(unsigned char** input, int col, int row)
     int i = 0, j = 0;
     float tempAngle = 0;
     m_ppEdgeMap = (unsigned char**)CreateMatrix(col+2, row+2, -1, -1, sizeof(unsigned char), &m_lPointerOffset);
+    if(m_bSaveAsOriginal)
+    {
+        m_ppOriginalEdgeMap = (unsigned char**)CreateMatrix(col+2, row+2, -1, -1, sizeof(unsigned char), &m_lPointerOffset);
+    }
     AllocateMemory(col, row, 0, 0);
     float **tempEdge = NULL;
 	float **tempEdge1 = NULL;
@@ -160,35 +172,33 @@ void SobelEdge::Filter(unsigned char** input, int col, int row)
 		{
 			for(j=0;j<col;j++)
 			{
-				m_ppEdgeMap[i][j] = (unsigned char)(255.0-(tempEdge1[i][j]/(max-min)*255.0)); // Edge is black
+				m_ppOriginalEdgeMap[i][j] = (unsigned char)(255.0-(tempEdge1[i][j]/(max-min)*255.0)); // Edge is black
 			}
 		}
 	}
-    else
-    {
-        for(i=0;i<row;i++)
+    for(i=0;i<row;i++)
+	{
+		for(j=0;j<col;j++)
 		{
-			for(j=0;j<col;j++)
-			{
-				if(tempEdge1[i][j]>m_fUpperThreshold)
-                {
-                    m_ppEdgeMap[i][j] = 0; // Edge is black
+			if(tempEdge1[i][j]>m_fUpperThreshold)
+            {
+                m_ppEdgeMap[i][j] = 0; // Edge is black
 #ifdef _DEBUG					
-                    m_statistic++;
+                m_statistic++;
 #endif
-                }
-				else if(tempEdge1[i][j]<=m_fUpperThreshold && tempEdge1[i][j]>m_fLowerThreshold)
-				{
-					m_MaybePixels.push_back(PixelLocation(j, i)); // Remember maybe-pixels
-				}
-                else
-                {
-                    m_ppEdgeMap[i][j] = 255;
-                }
+            }
+			else if(tempEdge1[i][j]<=m_fUpperThreshold && tempEdge1[i][j]>m_fLowerThreshold)
+			{
+				m_MaybePixels.push_back(PixelLocation(j, i)); // Remember maybe-pixels
 			}
+            else
+            {
+                m_ppEdgeMap[i][j] = 255;
+            }
 		}
-		Resolveambiguity(); // Resolve maybe-pixels
-    }
+	}
+	Resolveambiguity(); // Resolve maybe-pixels
+
     tempEdge += tempPointerOffset;
     if(tempEdge != NULL)
     {
@@ -214,6 +224,18 @@ void SobelEdge::SaveEdgeMap(std::string filename)
 void SobelEdge::SaveEdgeMap(std::string filename, int col, int row)
 {
     WriteToFile(filename, m_ppEdgeMap, 0, 0, col, row);
+}
+
+
+void SobelEdge::SaveOriginalEdgeMap(std::string filename)
+{
+    SaveOriginalEdgeMap(filename, m_iColumns, m_iRows);
+}
+
+
+void SobelEdge::SaveOriginalEdgeMap(std::string filename, int col, int row)
+{
+    WriteToFile(filename, m_ppOriginalEdgeMap, 0, 0, col, row);
 }
 
 

@@ -28,6 +28,8 @@ public:
     virtual void Filter(unsigned char** input, int col, int row);
     void SaveEdgeMap(std::string filename);
     void SaveEdgeMap(std::string filename, int col, int row);
+    void SaveOriginalEdgeMap(std::string filename);
+    void SaveOriginalEdgeMap(std::string filename, int col, int row);
 	unsigned char** GetEdgeMap();
     void SetUpperThreshold(float upThreshold);
     float GetUpperThreshold();
@@ -49,6 +51,7 @@ private:
 	};
 private:
     unsigned char** m_ppEdgeMap;
+    unsigned char** m_ppOriginalEdgeMap;
     long long m_lPointerOffset;
     char m_SobelOperator1[3][3];
     char m_SobelOperator2[3][3];

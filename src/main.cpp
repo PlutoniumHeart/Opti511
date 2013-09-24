@@ -3,63 +3,97 @@
 
 int main(int argc, char** argv)
 {
-	if(argc<=5 && argc > 6)
+	if(argc<=9)
 	{
-		std::cerr<<"Usage: "<<argv[0]<<" [-o/-i] upperThreshold lowerThreshold inputImage outputEdgemap"<<std::endl;
+		std::cerr<<"Usage: "<<argv[0]<<" -upper upperThreshold -lower lowerThreshold -i inputFile -o outputFile [-saveOriginalEdgeMap outputFile]"<<std::endl;
 		return -1;
 	}
-	else if(argc == 6)
-	{
-		SobelEdge* SobelFilter = new SobelEdge(argv[4]);
 
-		if(argv[1][0]=='-' && argv[1][1] == 'o')
-		{
-			SobelFilter->SaveAsOriginal(true);
-		}
-		else if(argv[1][0]=='-' && argv[1][1] == 'i')
-		{
-			SobelFilter->SetInterpolate(true);
-		}
+    int argCount = 1;
+    std::stringstream ss;
+    std::string inputFile;
+    std::string outputFile;
+    bool saveOriginalEdgeMap = false;
+    std::string originalEdgeMapOutput;
+    float UpperThreshold = 0.0, LowerThreshold = 0.0;
+    bool inputFileSet = false;
+    bool outputFileSet = false;
+    bool upperThresholdSet = false;
+    bool lowerThresholdSet = false;
+    bool saveOriginal = false;
 
-		std::stringstream ss(argv[2]);
-		float upperThreshold;
-		ss>>upperThreshold;
-		ss.str(std::string());
-		ss.clear();
+    while(argCount<argc)
+    {
+        if(strcmp(argv[argCount], "-upper") == 0)
+        {
+            argCount++;
+            ss<<argv[argCount];
+            ss>>UpperThreshold;
+            ss.str(std::string());
+            ss.clear();
+            upperThresholdSet = true;
+            argCount++;
+        }
+        else if(strcmp(argv[argCount], "-lower") == 0)
+        {
+            argCount++;
+            ss<<argv[argCount];
+            ss>>LowerThreshold;
+            ss.str(std::string());
+            ss.clear();
+            lowerThresholdSet = true;
+            argCount++;
+        }
+        else if(strcmp(argv[argCount], "-i") == 0)
+        {
+            argCount++;
+            inputFile = argv[argCount];
+            inputFileSet = true;
+            argCount++;
+        }
+        else if(strcmp(argv[argCount], "-o") == 0)
+        {
+            argCount++;
+            outputFile = argv[argCount];
+            outputFileSet = true;
+            argCount++;
+        }
+        else if(strcmp(argv[argCount], "-saveOriginalEdgeMap") == 0)
+        {
+            argCount++;
+            originalEdgeMapOutput = argv[argCount];
+            saveOriginal = true;
+            argCount++;
+        }
+        else
+        {
+            std::cerr<<"Unknown command line argument!"<<std::endl;
+            return -1;
+        }
+    }
 
-		ss<<argv[3];
-		float lowerThreshold;
-		ss>>lowerThreshold;
+    if(!(upperThresholdSet && lowerThresholdSet &&  inputFileSet &&outputFileSet))
+    {
+        std::cerr<<"Usage: "<<argv[0]<<" -upper upperThreshold -lower lowerThreshold -i inputFile -o outputFile [-saveOriginalEdgeMap outputFile]"<<std::endl;
+        return -1;
+    }
 
-		SobelFilter->SetUpperThreshold(upperThreshold);
-		SobelFilter->SetLowerThreshold(lowerThreshold);
-		SobelFilter->Filter();
-		SobelFilter->SaveEdgeMap(argv[5]);
+    SobelEdge* SobelFilter = new SobelEdge(inputFile);
 
-		delete SobelFilter;
-	}
-	else
-	{
-		SobelEdge* SobelFilter = new SobelEdge(argv[3]);
+    SobelFilter->SetUpperThreshold(UpperThreshold);
+    SobelFilter->SetLowerThreshold(LowerThreshold);
+    if(saveOriginal)
+    {
+        SobelFilter->SaveAsOriginal(true);
+    }
+    SobelFilter->Filter();
+    SobelFilter->SaveEdgeMap(outputFile);
+    if(saveOriginal)
+    {
+        SobelFilter->SaveOriginalEdgeMap(originalEdgeMapOutput);
+    }
 
-		std::stringstream ss(argv[1]);
-		float upperThreshold;
-		ss>>upperThreshold;
-		ss.str(std::string());
-		ss.clear();
-
-		float lowerThreshold;
-		ss<<argv[2];
-		ss>>lowerThreshold;
-
-		SobelFilter->SetUpperThreshold(upperThreshold);
-		SobelFilter->SetLowerThreshold(lowerThreshold);
-		SobelFilter->Filter();
-		SobelFilter->SaveEdgeMap(argv[4]);
-
-		delete SobelFilter;
-	}
-    return 0;
+	delete SobelFilter;
 }
 
 // Other way of using this edge detection filter
