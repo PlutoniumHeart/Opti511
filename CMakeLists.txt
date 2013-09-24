@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(Sobel)
+project(Opti511)
 
 add_executable(Sobel src/main.cpp
 					 src/BaseImage.h
