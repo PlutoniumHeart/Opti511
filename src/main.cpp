@@ -5,7 +5,7 @@ int main(int argc, char** argv)
 {
 	if(argc<=4 && argc > 5)
 	{
-		std::cerr<<"Usage: "<<argv[0]<<" [-o] threshold inputImage outputEdgemap"<<std::endl;
+		std::cerr<<"Usage: "<<argv[0]<<" [-o/-i] threshold inputImage outputEdgemap"<<std::endl;
 		return -1;
 	}
 	else if(argc == 5)
@@ -15,6 +15,10 @@ int main(int argc, char** argv)
 		if(argv[1][0]=='-' && argv[1][1] == 'o')
 		{
 			SobelFilter->SaveAsOriginal(true);
+		}
+		else if(argv[1][0]=='-' && argv[1][1] == 'i')
+		{
+			SobelFilter->SetInterpolate(true);
 		}
 
 		std::stringstream ss(argv[2]);
@@ -35,7 +39,6 @@ int main(int argc, char** argv)
 		float threshold;
 		ss>>threshold;
 
-        SobelFilter->SetInterpolate(true);
 		SobelFilter->SetThreshold(threshold);
 		SobelFilter->Filter();
 		SobelFilter->SaveEdgeMap(argv[3]);

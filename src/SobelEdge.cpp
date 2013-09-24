@@ -57,17 +57,17 @@ SobelEdge::SobelEdge(std::string filename)
     m_SobelOperator1[2][2] = -1;
 
 
-    m_SobelOperator2[0][0] = -1;
+    m_SobelOperator2[0][0] = 1;
     m_SobelOperator2[0][1] = 0;
-    m_SobelOperator2[0][2] = 1;
+    m_SobelOperator2[0][2] = -1;
     
-    m_SobelOperator2[1][0] = -2;
+    m_SobelOperator2[1][0] = 2;
     m_SobelOperator2[1][1] = 0;
-    m_SobelOperator2[1][2] = 2;
+    m_SobelOperator2[1][2] = -2;
 
-    m_SobelOperator2[2][0] = -1;
+    m_SobelOperator2[2][0] = 1;
     m_SobelOperator2[2][1] = 0;
-    m_SobelOperator2[2][2] = 1;
+    m_SobelOperator2[2][2] = -1;
 }
 
 
@@ -132,7 +132,7 @@ void SobelEdge::Filter(unsigned char** input, int col, int row)
 			}
 			tempEdge[i][j] = temp2;
 
-            tempAngle = atan2(temp1, temp);
+            tempAngle = atan2(temp, temp1);
 
             m_ppGradientDirection[i][j] = tempAngle;
         }

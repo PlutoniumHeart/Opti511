@@ -44,7 +44,7 @@ void NonMaxSuppression::Suppress(int col, int row, float** input)
                     (m_ppGradientDirection[i][j]>7.0*M_PI/8.0) || 
                     (m_ppGradientDirection[i][j]<=-7.0*M_PI/8.0) )
                 {
-                    if( input[i][j]>=input[i+1][j] && input[i][j]>=input[i-1][j] )
+                    if( input[i][j]>=input[i][j+1] && input[i][j]>=input[i][j-1] )
                     {
                         input[i][j] = input[i][j];
                     }
@@ -93,7 +93,8 @@ void NonMaxSuppression::Suppress(int col, int row, float** input)
             }
             else
             {
-                if( m_ppGradientDirection[i][j]<M_PI/4.0 && m_ppGradientDirection[i][j]>=0.0 )
+                if( (m_ppGradientDirection[i][j]<M_PI/4.0 && m_ppGradientDirection[i][j]>=0.0) ||
+					(m_ppGradientDirection[i][j]>=-M_PI && m_ppGradientDirection[i][j]<-3.0*M_PI/4.0) )
                 {
                     float temp1 = input[i-1][j+1]*tan(m_ppGradientDirection[i][j]) + (1.0-tan(m_ppGradientDirection[i][j]))*input[i][j+1];
                     float temp2 = input[i+1][j-1]*tan(m_ppGradientDirection[i][j]) + (1.0-tan(m_ppGradientDirection[i][j]))*input[i][j-1];
@@ -107,7 +108,8 @@ void NonMaxSuppression::Suppress(int col, int row, float** input)
                         input[i][j] = 0.0;
                     }
                 }
-                else if( m_ppGradientDirection[i][j]<M_PI/2.0 && m_ppGradientDirection[i][j]>=M_PI/4.0 )
+                else if( (m_ppGradientDirection[i][j]<M_PI/2.0 && m_ppGradientDirection[i][j]>=M_PI/4.0) ||
+						 (m_ppGradientDirection[i][j]>=-3.0*M_PI/4.0 && m_ppGradientDirection[i][j]<-M_PI/2.0) )
                 {
                     float temp1 = input[i-1][j+1]*(1.0/tan(m_ppGradientDirection[i][j])) + (1.0-1.0/tan(m_ppGradientDirection[i][j])*input[i-1][j]);
                     float temp2 = input[i+1][j-1]*(1.0/tan(m_ppGradientDirection[i][j])) + (1.0-1.0/tan(m_ppGradientDirection[i][j])*input[i+1][j]);
@@ -121,7 +123,8 @@ void NonMaxSuppression::Suppress(int col, int row, float** input)
                         input[i][j] = 0.0;
                     }
                 }
-                else if( m_ppGradientDirection[i][j]<3.0*M_PI/4.0 && m_ppGradientDirection[i][j]>=M_PI/2.0 )
+                else if( (m_ppGradientDirection[i][j]<3.0*M_PI/4.0 && m_ppGradientDirection[i][j]>=M_PI/2.0) ||
+						 (m_ppGradientDirection[i][j]>=-M_PI/2.0 && m_ppGradientDirection[i][j]<-M_PI/4.0) )
                 {
                     float temp1 = input[i-1][j-1]*(1.0/(-tan(m_ppGradientDirection[i][j]))) + (1.0-1.0/(-tan(m_ppGradientDirection[i][j])))*input[i-1][j];
                     float temp2 = input[i+1][j+1]*(1.0/(-tan(m_ppGradientDirection[i][j]))) + (1.0-1.0/(-tan(m_ppGradientDirection[i][j])))*input[i+1][j];
@@ -135,7 +138,8 @@ void NonMaxSuppression::Suppress(int col, int row, float** input)
                         input[i][j] = 0.0;
                     }
                 }
-                else
+                else if( (m_ppGradientDirection[i][j]<=3.141593 && m_ppGradientDirection[i][j]>=3.0*M_PI/4.0) ||
+						  (m_ppGradientDirection[i][j]>=-M_PI/4.0 && m_ppGradientDirection[i][j]<0.0) )
                 {
                     float temp1 = input[i-1][j-1]*(-tan(m_ppGradientDirection[i][j])) + input[i][j-1]*(1.0-(-tan(m_ppGradientDirection[i][j])));
                     float temp2 = input[i+1][j+1]*(-tan(m_ppGradientDirection[i][j])) + input[i][j+1]*(1.0-(-tan(m_ppGradientDirection[i][j])));
