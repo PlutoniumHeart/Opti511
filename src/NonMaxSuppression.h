@@ -19,7 +19,7 @@ protected:
     float** m_ppGradientDirection;
     bool m_bInterpolate;
     
-    void Suppress(int col, int row, float** input);
+    void Suppress(int col, int row, float** input, float** output);
     void AllocateMemory(int col, int row, int startCol, int startRow);
 private:
     long long m_lPointerOffset;

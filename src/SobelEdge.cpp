@@ -5,9 +5,12 @@ SobelEdge::SobelEdge()
 	: BaseImage()
     , m_ppEdgeMap(NULL)
     , m_lPointerOffset(0)
-    , m_fThreshold(0.0)
+    , m_fUpperThreshold(0.0)
+	, m_fLowerThreshold(0.0)
 	, m_bSaveAsOriginal(false)
+#ifdef _DEBUG
     , m_statistic(0)
+#endif
 {
 	m_SobelOperator1[0][0] = 1;
     m_SobelOperator1[0][1] = 2;
@@ -40,9 +43,12 @@ SobelEdge::SobelEdge(std::string filename)
     : BaseImage(filename, -1, -1)
     , m_ppEdgeMap(NULL)
     , m_lPointerOffset(0)
-    , m_fThreshold(0.0)
+    , m_fUpperThreshold(0.0)
+	, m_fLowerThreshold(0.0)
     , m_bSaveAsOriginal(false)
+#ifdef _DEBUG
     , m_statistic(0)
+#endif
 {
     m_SobelOperator1[0][0] = 1;
     m_SobelOperator1[0][1] = 2;
@@ -100,11 +106,20 @@ void SobelEdge::Filter(unsigned char** input, int col, int row)
     m_ppEdgeMap = (unsigned char**)CreateMatrix(col+2, row+2, -1, -1, sizeof(unsigned char), &m_lPointerOffset);
     AllocateMemory(col, row, 0, 0);
     float **tempEdge = NULL;
+	float **tempEdge1 = NULL;
 
     long long tempPointerOffset;
     tempEdge = (float**)CreateMatrix(col+2, row+2, -1, -1, sizeof(float), &tempPointerOffset);
+	tempEdge1 = (float**)CreateMatrix(col+2, row+2, -1, -1, sizeof(float), &tempPointerOffset);
 
 	float max = 0.0, min = 50000000;
+
+	if(m_fLowerThreshold > m_fUpperThreshold)
+	{
+		std::cerr<<"Lower threshold is bigger than the upper threshold!"<<std::endl;
+		return;
+	}
+
     for(i=0;i<row;i++)
     {
         for(j=0;j<col;j++)
@@ -138,14 +153,14 @@ void SobelEdge::Filter(unsigned char** input, int col, int row)
         }
     }
     // Converting float to unsigned char for saving.
-    Suppress(m_iColumns, m_iRows, tempEdge);
+    Suppress(m_iColumns, m_iRows, tempEdge, tempEdge1);
 	if(m_bSaveAsOriginal)
 	{
 		for(i=0;i<row;i++)
 		{
 			for(j=0;j<col;j++)
 			{
-				m_ppEdgeMap[i][j] = (unsigned char)(255.0-(tempEdge[i][j]/(max-min)*255.0)); // Edge is black
+				m_ppEdgeMap[i][j] = (unsigned char)(255.0-(tempEdge1[i][j]/(max-min)*255.0)); // Edge is black
 			}
 		}
 	}
@@ -155,24 +170,38 @@ void SobelEdge::Filter(unsigned char** input, int col, int row)
 		{
 			for(j=0;j<col;j++)
 			{
-				if(tempEdge[i][j]>m_fThreshold)
+				if(tempEdge1[i][j]>m_fUpperThreshold)
                 {
                     m_ppEdgeMap[i][j] = 0; // Edge is black
+#ifdef _DEBUG					
                     m_statistic++;
+#endif
                 }
+				else if(tempEdge1[i][j]<=m_fUpperThreshold && tempEdge1[i][j]>m_fLowerThreshold)
+				{
+					m_MaybePixels.push_back(PixelLocation(j, i)); // Remember maybe-pixels
+				}
                 else
                 {
                     m_ppEdgeMap[i][j] = 255;
                 }
 			}
 		}
+		Resolveambiguity(); // Resolve maybe-pixels
     }
     tempEdge += tempPointerOffset;
     if(tempEdge != NULL)
     {
         free(tempEdge);
     }
+	tempEdge1 += tempPointerOffset;
+    if(tempEdge1 != NULL)
+    {
+        free(tempEdge1);
+    }
+#ifdef _DEBUG
     std::cout<<"Edge Pixels: "<<m_statistic<<std::endl;
+#endif
 }
 
 
@@ -194,15 +223,27 @@ unsigned char** SobelEdge::GetEdgeMap()
 }
 
 
-void SobelEdge::SetThreshold(float threshold)
+void SobelEdge::SetUpperThreshold(float upThreshold)
 {
-    m_fThreshold = threshold;
+    m_fUpperThreshold = upThreshold;
 }
 
 
-float SobelEdge::GetThreshold()
+float SobelEdge::GetUpperThreshold()
 {
-    return m_fThreshold;
+    return m_fUpperThreshold;
+}
+
+
+void SobelEdge::SetLowerThreshold(float lowerThreshold)
+{
+	m_fLowerThreshold = lowerThreshold;
+}
+
+
+float SobelEdge::GetLowerThreshold()
+{
+	return m_fLowerThreshold;
 }
 
 
@@ -221,4 +262,45 @@ void SobelEdge::SetColumns(int col)
 void SobelEdge::SetRows(int row)
 {
 	m_iRows = row;
+}
+
+
+void SobelEdge::Resolveambiguity()
+{
+	std::vector<PixelLocation>::iterator itr;
+	bool next = false;
+	int statistics = 0;
+
+#ifdef _DEBUG
+	std::cout<<"Maybe pixel number: "<<m_MaybePixels.size()<<std::endl;
+#endif
+
+	for(itr=m_MaybePixels.begin();itr!=m_MaybePixels.end();itr++)
+	{
+		m_ppEdgeMap[itr->row][itr->col] = 255;
+		for(int i=-1;i<2;i++)
+		{
+			for(int j=-1;j<2;j++)
+			{
+				if(m_ppEdgeMap[itr->row+i][itr->col+j] == 0)
+				{
+					m_ppEdgeMap[itr->row][itr->col] = 0; // Edge is black
+					next = true;
+#ifdef _DEBUG
+					statistics++;
+					m_statistic++;
+#endif
+					break;
+				}
+			}
+			if(next)
+			{
+				next = !next;
+				break;
+			}
+		}
+	}
+#ifdef _DEBUG
+	std::cout<<statistics<<" confirmed as edges."<<std::endl;
+#endif
 }

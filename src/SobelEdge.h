@@ -9,6 +9,7 @@
 
 
 #include <iostream>
+#include <vector>
 #include "BaseImage.h"
 #include "NonMaxSuppression.h"
 
@@ -28,19 +29,38 @@ public:
     void SaveEdgeMap(std::string filename);
     void SaveEdgeMap(std::string filename, int col, int row);
 	unsigned char** GetEdgeMap();
-    void SetThreshold(float threshold);
-    float GetThreshold();
+    void SetUpperThreshold(float upThreshold);
+    float GetUpperThreshold();
+	void SetLowerThreshold(float lowThreshold);
+	float GetLowerThreshold();
 	void SaveAsOriginal(bool b);
 	void SetColumns(int col);
 	void SetRows(int row);
+private:
+	struct PixelLocation
+	{
+		int col;
+		int row;
+		PixelLocation(int c, int r)
+		{
+			col = c;
+			row = r;
+		}
+	};
 private:
     unsigned char** m_ppEdgeMap;
     long long m_lPointerOffset;
     char m_SobelOperator1[3][3];
     char m_SobelOperator2[3][3];
-    float m_fThreshold;
+    float m_fUpperThreshold;
+	float m_fLowerThreshold;
 	bool m_bSaveAsOriginal;
+#ifdef _DEBUG
     int m_statistic;
+#endif
+	std::vector<PixelLocation> m_MaybePixels;
+private:
+	void Resolveambiguity();
 };
 
 

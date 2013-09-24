@@ -3,14 +3,14 @@
 
 int main(int argc, char** argv)
 {
-	if(argc<=4 && argc > 5)
+	if(argc<=5 && argc > 6)
 	{
-		std::cerr<<"Usage: "<<argv[0]<<" [-o/-i] threshold inputImage outputEdgemap"<<std::endl;
+		std::cerr<<"Usage: "<<argv[0]<<" [-o/-i] upperThreshold lowerThreshold inputImage outputEdgemap"<<std::endl;
 		return -1;
 	}
-	else if(argc == 5)
+	else if(argc == 6)
 	{
-		SobelEdge* SobelFilter = new SobelEdge(argv[3]);
+		SobelEdge* SobelFilter = new SobelEdge(argv[4]);
 
 		if(argv[1][0]=='-' && argv[1][1] == 'o')
 		{
@@ -22,26 +22,40 @@ int main(int argc, char** argv)
 		}
 
 		std::stringstream ss(argv[2]);
-		float threshold;
-		ss>>threshold;
+		float upperThreshold;
+		ss>>upperThreshold;
+		ss.str(std::string());
+		ss.clear();
 
-		SobelFilter->SetThreshold(threshold);
+		ss<<argv[3];
+		float lowerThreshold;
+		ss>>lowerThreshold;
+
+		SobelFilter->SetUpperThreshold(upperThreshold);
+		SobelFilter->SetLowerThreshold(lowerThreshold);
 		SobelFilter->Filter();
-		SobelFilter->SaveEdgeMap(argv[4]);
+		SobelFilter->SaveEdgeMap(argv[5]);
 
 		delete SobelFilter;
 	}
 	else
 	{
-		SobelEdge* SobelFilter = new SobelEdge(argv[2]);
+		SobelEdge* SobelFilter = new SobelEdge(argv[3]);
 
 		std::stringstream ss(argv[1]);
-		float threshold;
-		ss>>threshold;
+		float upperThreshold;
+		ss>>upperThreshold;
+		ss.str(std::string());
+		ss.clear();
 
-		SobelFilter->SetThreshold(threshold);
+		float lowerThreshold;
+		ss<<argv[2];
+		ss>>lowerThreshold;
+
+		SobelFilter->SetUpperThreshold(upperThreshold);
+		SobelFilter->SetLowerThreshold(lowerThreshold);
 		SobelFilter->Filter();
-		SobelFilter->SaveEdgeMap(argv[3]);
+		SobelFilter->SaveEdgeMap(argv[4]);
 
 		delete SobelFilter;
 	}
