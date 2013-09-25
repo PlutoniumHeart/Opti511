@@ -45,7 +45,7 @@ BaseImage::BaseImage(std::string filename, int startCol, int startRow)
         {
             m_ImageFile.read((char*)&m_ppImageMatrix[i][0], m_iColumns);
         }
-        Reflect(1);
+        Reflect(abs(startCol));
 	}
 	else
 	{
