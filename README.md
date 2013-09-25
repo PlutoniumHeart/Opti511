@@ -1,4 +1,6 @@
 Opti511
 =======
 
-Opti511 project
+Opti511 Projects
+Sobel Edge Detection
+Laplacian of Gaussian Edge Detection 
