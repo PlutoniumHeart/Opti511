@@ -36,7 +36,6 @@ bool ArgumentParsing::Parse(int argc, char** argv)
             m_fFloatTypeInputs.insert(std::pair<std::string, float>(stringTempName, fTemp));
             ss.str(std::string());
             ss.clear();
-            //upperThresholdSet = true;
             argCount++;
         }
         else if(strcmp(argv[argCount], "-lower") == 0)
@@ -48,7 +47,6 @@ bool ArgumentParsing::Parse(int argc, char** argv)
             m_fFloatTypeInputs.insert(std::pair<std::string, float>(stringTempName, fTemp));
             ss.str(std::string());
             ss.clear();
-            //lowerThresholdSet = true;
             argCount++;
         }
         else if(strcmp(argv[argCount], "-i") == 0)
@@ -57,7 +55,6 @@ bool ArgumentParsing::Parse(int argc, char** argv)
             argCount++;
             stringTemp = argv[argCount];
             m_StringTypeInputs.insert(std::pair<std::string, std::string>(stringTempName, stringTemp));
-            //inputFileSet = true;
             argCount++;
         }
         else if(strcmp(argv[argCount], "-o") == 0)
@@ -66,7 +63,6 @@ bool ArgumentParsing::Parse(int argc, char** argv)
             argCount++;
             stringTemp = argv[argCount];
             m_StringTypeInputs.insert(std::pair<std::string, std::string>(stringTempName, stringTemp));
-            //outputFileSet = true;
             argCount++;
         }
         else if(strcmp(argv[argCount], "-sigma") == 0)
@@ -86,7 +82,6 @@ bool ArgumentParsing::Parse(int argc, char** argv)
             argCount++;
             stringTemp = argv[argCount];
             m_StringTypeInputs.insert(std::pair<std::string, std::string>(stringTempName, stringTemp));
-            //saveOriginal = true;
             argCount++;
         }
         else

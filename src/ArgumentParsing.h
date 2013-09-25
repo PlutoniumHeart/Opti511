@@ -20,8 +20,6 @@ public:
     std::string LookupStringType(std::string entry);
 private:
     int m_minArgumentNumber;
-    /*std::pair<std::string, float> m_fFloatTypePair;
-    std::pair<std::string, std::string> m_StringTypePair;*/
     std::map<std::string, float> m_fFloatTypeInputs;
     std::map<std::string, std::string> m_StringTypeInputs;
 };
