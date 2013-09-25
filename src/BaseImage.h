@@ -15,7 +15,6 @@
 class BaseImage
 {
 public:
-	BaseImage();
 	BaseImage(std::string filename, int startCol, int startRow);
 	virtual ~BaseImage();
 
@@ -24,6 +23,17 @@ public:
     unsigned char** GetImagePointer();
 	int GetColumns();
 	int GetRows();
+protected:
+    struct PixelLocation
+	{
+		int col;
+		int row;
+		PixelLocation(int c, int r)
+		{
+			col = c;
+			row = r;
+		}
+	};
 protected:
 	std::string m_Filename;
 	std::fstream m_ImageFile;

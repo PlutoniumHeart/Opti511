@@ -1,45 +1,6 @@
 #include "SobelEdge.h"
 
 
-SobelEdge::SobelEdge()
-	: BaseImage()
-    , m_ppEdgeMap(NULL)
-    , m_ppOriginalEdgeMap(NULL)
-    , m_lPointerOffset(0)
-    , m_fUpperThreshold(0.0)
-	, m_fLowerThreshold(0.0)
-	, m_bSaveAsOriginal(false)
-#ifdef _DEBUG
-    , m_statistic(0)
-#endif
-{
-	m_SobelOperator1[0][0] = 1;
-    m_SobelOperator1[0][1] = 2;
-    m_SobelOperator1[0][2] = 1;
-    
-    m_SobelOperator1[1][0] = 0;
-    m_SobelOperator1[1][1] = 0;
-    m_SobelOperator1[1][2] = 0;
-
-    m_SobelOperator1[2][0] = -1;
-    m_SobelOperator1[2][1] = -2;
-    m_SobelOperator1[2][2] = -1;
-
-
-    m_SobelOperator2[0][0] = -1;
-    m_SobelOperator2[0][1] = 0;
-    m_SobelOperator2[0][2] = 1;
-    
-    m_SobelOperator2[1][0] = -2;
-    m_SobelOperator2[1][1] = 0;
-    m_SobelOperator2[1][2] = 2;
-
-    m_SobelOperator2[2][0] = -1;
-    m_SobelOperator2[2][1] = 0;
-    m_SobelOperator2[2][2] = 1;
-}
-
-
 SobelEdge::SobelEdge(std::string filename)
     : BaseImage(filename, -1, -1)
     , m_ppEdgeMap(NULL)
@@ -81,16 +42,18 @@ SobelEdge::SobelEdge(std::string filename)
 
 SobelEdge::~SobelEdge()
 {
-    m_ppEdgeMap += m_lPointerOffset;
     if(m_ppEdgeMap != NULL)
     {
+        m_ppEdgeMap += m_lPointerOffset;
         free(m_ppEdgeMap);
+        m_ppEdgeMap = NULL;
     }
 
-    m_ppOriginalEdgeMap += m_lPointerOffset;
     if(m_ppOriginalEdgeMap != NULL)
     {
+        m_ppOriginalEdgeMap += m_lPointerOffset;
         free(m_ppOriginalEdgeMap);
+        m_ppOriginalEdgeMap = NULL;
     }
 }
 

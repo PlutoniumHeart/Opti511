@@ -11,7 +11,6 @@
 class LoGEdge : BaseImage
 {
 public:
-    LoGEdge();
     LoGEdge(std::string filename, float sigma);
     virtual ~LoGEdge();
 
@@ -19,20 +18,19 @@ public:
     virtual void Filter(unsigned char** input);
     virtual void Filter(unsigned char** input, int col, int row);
 
-    virtual void SaveEdgeMap(std::string filename);
-    virtual void SaveEdgeMap(std::string filename, int col, int row);
-    virtual void SaveOriginalEdgeMap(std::string filename);
-    virtual void SaveOriginalEdgeMap(std::string filename, int col, int row);
+    void SaveResult(std::string filename);
+    void SaveResult(std::string filename, int col, int row);
+    void SaveRawResult(std::string filename);
+    void SaveRawResult(std::string filename, int col, int row);
 
-    virtual void SetUpperThreshold(float upThreshold);
-    virtual float GetUpperThreshold();
-	virtual void SetLowerThreshold(float lowThreshold);
-	virtual float GetLowerThreshold();
+    void SetUpperThreshold(float upThreshold);
+    float GetUpperThreshold();
+	void SetLowerThreshold(float lowThreshold);
+	float GetLowerThreshold();
 
     void SetColumns(int col);
 	void SetRows(int row);
-
-    void SaveAsOriginal(bool b);
+    void SaveAsRaw(bool b);
 protected:
     void Resolveambiguity();
 private:
@@ -47,13 +45,13 @@ private:
 		}
 	};
 private:
-    long long m_lPointerOffsetForLoG;
-    long long m_lPointerOffsetForEdge;
-    float** m_ppLoG;
-    unsigned char** m_ppEdgeMap;
-    unsigned char** m_ppOriginalEdgeMap;
+    long long m_lPointerOffsetForOperator;
+    long long m_lPointerOffsetForResult;
+    float** m_ppOperator;
+    unsigned char** m_ppResult;
+    unsigned char** m_ppRawResult;
     int m_iLoGSize;
-    bool m_bSaveAsOriginal;
+    bool m_bSaveAsRaw;
     float m_fUpperThreshold;
 	float m_fLowerThreshold;
     std::vector<PixelLocation> m_MaybePixels;

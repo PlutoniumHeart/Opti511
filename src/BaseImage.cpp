@@ -1,16 +1,6 @@
 #include "BaseImage.h"
 
 
-BaseImage::BaseImage()
-	: m_iColumns(0)
-	, m_iRows(0)
-    , m_iBpp(0)
-	, m_ppImageMatrix(NULL)
-    , m_lPointerOffset(0)
-{
-}
-
-
 // Constructor used for loading image
 BaseImage::BaseImage(std::string filename, int startCol, int startRow)
 	: m_iColumns(0)
@@ -58,9 +48,9 @@ BaseImage::BaseImage(std::string filename, int startCol, int startRow)
 
 BaseImage::~BaseImage()
 {
-    m_ppImageMatrix += m_lPointerOffset;
     if(m_ppImageMatrix!=NULL)
     {
+        m_ppImageMatrix += m_lPointerOffset;
         free(m_ppImageMatrix);
         m_ppImageMatrix = NULL;
     }

@@ -10,10 +10,11 @@ NonMaxSuppression::NonMaxSuppression()
 
 NonMaxSuppression::~NonMaxSuppression()
 {
-    m_ppGradientDirection += m_lPointerOffset;
     if(m_ppGradientDirection != NULL)
     {
+        m_ppGradientDirection += m_lPointerOffset;
         free(m_ppGradientDirection);
+        m_ppGradientDirection = NULL;
     }
 }
 

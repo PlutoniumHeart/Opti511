@@ -17,8 +17,6 @@
 class SobelEdge : public BaseImage, public NonMaxSuppression
 {
 public:
-	// Default constructor for usage styles not shown in main
-	SobelEdge();
     SobelEdge(std::string filename);
     virtual ~SobelEdge();
 
@@ -26,6 +24,7 @@ public:
     virtual void Filter();
     virtual void Filter(unsigned char** input);
     virtual void Filter(unsigned char** input, int col, int row);
+
     void SaveEdgeMap(std::string filename);
     void SaveEdgeMap(std::string filename, int col, int row);
     void SaveOriginalEdgeMap(std::string filename);

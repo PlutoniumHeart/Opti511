@@ -7,10 +7,10 @@ int main(int argc, char** argv)
 
     LoGFilter->SetUpperThreshold(5);
     LoGFilter->SetLowerThreshold(3);
-    LoGFilter->SaveAsOriginal(true);
+    LoGFilter->SaveAsRaw(true);
     LoGFilter->Filter();
-    LoGFilter->SaveEdgeMap("../data/LoGEdge_2.pgm");
-    LoGFilter->SaveOriginalEdgeMap("../data/LoGOriginal.pgm");
+    LoGFilter->SaveResult("../data/LoGEdge_2.pgm");
+    LoGFilter->SaveRawResult("../data/LoGOriginal.pgm");
 
     delete LoGFilter;
     return 0;

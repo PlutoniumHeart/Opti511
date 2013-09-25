@@ -3,7 +3,7 @@
 
 int main(int argc, char** argv)
 {
-	if(argc<=9)
+	if(argc<=8)
 	{
 		std::cerr<<"Usage: "<<argv[0]<<" -upper upperThreshold -lower lowerThreshold -i inputFile -o outputFile [-saveOriginalEdgeMap outputFile]"<<std::endl;
 		return -1;
@@ -95,17 +95,3 @@ int main(int argc, char** argv)
 
 	delete SobelFilter;
 }
-
-// Other way of using this edge detection filter
-/*
-BaseImage* ImageReader = new BaseImage("../data/cmanswirl.pgm", -1, -1);
-SobelEdge* SobelFilter = new SobelEdge;
-
-SobelFilter->SaveAsOriginal(true);
-SobelFilter->SetColumns(ImageReader->GetColumns());
-SobelFilter->SetRows(ImageReader->GetRows());
-SobelFilter->Filter(ImageReader->GetImagePointer());
-SobelFilter->SaveEdgeMap("../data/alternative.pgm");
-
-delete ImageReader;
-delete SobelFilter;*/
