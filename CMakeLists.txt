@@ -8,11 +8,16 @@ add_executable(Sobel src/sobel.cpp
                      src/NonMaxSuppression.h
                      src/NonMaxSuppression.cpp
                      src/SobelEdge.h
-                     src/SobelEdge.cpp)
+                     src/SobelEdge.cpp
+                     src/ArgumentParsing.h
+                     src/ArgumentParsing.cpp
+)
 
 add_executable(LoG src/LoG.cpp
                    src/BaseImage.h
                    src/BaseImage.cpp
                    src/LoGEdge.h
                    src/LoGEdge.cpp
+                   src/ArgumentParsing.h
+                   src/ArgumentParsing.cpp
 )
