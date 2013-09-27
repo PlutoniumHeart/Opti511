@@ -162,5 +162,5 @@ void NonMaxSuppression::Suppress(int col, int row, float** input, float** output
 
 void NonMaxSuppression::AllocateMemory(int col, int row, int startCol, int startRow)
 {
-    m_ppGradientDirection = (float**)BaseImage::CreateMatrix(col, row, 0, 0, sizeof(float), &m_lPointerOffset);
+    m_ppGradientDirection = (float**)BaseImage::CreateMatrix(col, row, startCol, startRow, sizeof(float), &m_lPointerOffset);
 }

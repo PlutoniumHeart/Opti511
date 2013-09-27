@@ -4,7 +4,7 @@
 
 int main(int argc, char** argv)
 {
-    ArgumentParsing* parser = new ArgumentParsing(11);
+    ArgumentParsing* parser = new ArgumentParsing(10);
     if(!parser->Parse(argc, argv))
     {
         std::cerr<<"Usage: "<<argv[0]<<" -upper upperThreshold -lower lowerThreshold -sigma Sigma -i inputFile -o outputFile [-saveOriginalEdgeMap outputFile]"<<std::endl;

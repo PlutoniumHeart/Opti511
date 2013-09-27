@@ -35,7 +35,7 @@ BaseImage::BaseImage(std::string filename, int startCol, int startRow)
         {
             m_ImageFile.read((char*)&m_ppImageMatrix[i][0], m_iColumns);
         }
-        Reflect(abs(startCol));
+        Reflect<unsigned char>(m_iColumns, m_iRows, abs(startCol), m_ppImageMatrix);
 	}
 	else
 	{
@@ -139,61 +139,6 @@ void** BaseImage::CreateMatrix(int col, int row, int startCol, int startRow, int
 	}
     *offset = temp-p;
 	return (p);
-}
-
-
-void BaseImage::Reflect(int amount)
-{
-    int i = 0, j = 0;
-
-    if(amount<1 || amount>(m_iRows+1)/2 || amount>(m_iColumns+1)/2)
-    {
-        throw std::invalid_argument("Image Columns and Rows must be larger than 0.");
-    }
-
-    for(i=-amount;i<0;i++)
-    {
-        for(j=-amount;j<0;j++)
-        {
-            m_ppImageMatrix[i][j] = m_ppImageMatrix[-i-1][-j-1];
-        }
-        for(j=0;j<m_iColumns;j++)
-        {
-            m_ppImageMatrix[i][j] = m_ppImageMatrix[-i-1][j];
-        }
-        for(j=m_iColumns;j<m_iColumns+amount;j++)
-        {
-            m_ppImageMatrix[i][j] = m_ppImageMatrix[-i-1][m_iColumns*2-j-1];
-        }
-    }
-
-    for(i=0;i<m_iRows;i++)
-    {
-        for(j=-amount;j<0;j++)
-        {
-            m_ppImageMatrix[i][j] = m_ppImageMatrix[i][-j-1];
-        }
-        for(j=m_iColumns;j<m_iColumns+amount;j++)
-        {
-            m_ppImageMatrix[i][j] = m_ppImageMatrix[i][m_iColumns*2-j-1];
-        }
-    }
-
-    for(i=m_iRows;i<m_iRows+amount;i++)
-    {
-        for(j=-amount;j<0;j++)
-        {
-            m_ppImageMatrix[i][j] = m_ppImageMatrix[m_iRows*2-i-1][-j-1];
-        }
-        for(j=0;j<m_iColumns;j++)
-        {
-            m_ppImageMatrix[i][j] = m_ppImageMatrix[m_iRows*2-i-1][j];
-        }
-        for(j=m_iColumns;j<m_iColumns+amount;j++)
-        {
-            m_ppImageMatrix[i][j] = m_ppImageMatrix[m_iRows*2-i-1][m_iColumns*2-j-1];
-        }
-    }
 }
 
 

@@ -18,6 +18,8 @@ add_executable(LoG src/LoG.cpp
                    src/BaseImage.cpp
                    src/LoGEdge.h
                    src/LoGEdge.cpp
+                   src/ZeroCross.h
+                   src/ZeroCross.cpp
                    src/ArgumentParsing.h
                    src/ArgumentParsing.cpp
 )

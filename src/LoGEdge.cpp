@@ -68,12 +68,21 @@ void LoGEdge::Filter(unsigned char** input, int col, int row)
     int i = 0, j = 0;
     float max = 0.0, min = 0.0;
     long long tempPointerOffset = 0;
-    float** tempEdge= (float**)BaseImage::CreateMatrix(m_iColumns+(m_iLoGSize-1), m_iRows+(m_iLoGSize-1), -(m_iLoGSize-1)/2, -(m_iLoGSize-1)/2, sizeof(float), &tempPointerOffset);
-    float** ppEdgeMapFloat = (float**)BaseImage::CreateMatrix(m_iColumns+(m_iLoGSize-1), m_iRows+(m_iLoGSize-1), -(m_iLoGSize-1)/2, -(m_iLoGSize-1)/2, sizeof(float), &tempPointerOffset);
-    m_ppResult = (unsigned char**)BaseImage::CreateMatrix(m_iColumns+(m_iLoGSize-1), m_iRows+(m_iLoGSize-1), -(m_iLoGSize-1)/2, -(m_iLoGSize-1)/2, sizeof(unsigned char), &m_lPointerOffsetForResult);
+    unsigned char** tempEdge= (unsigned char**)BaseImage::CreateMatrix(m_iColumns+2, m_iRows+2, -1, -1, 
+                                                                       sizeof(unsigned char), &tempPointerOffset);
+
+    float** ppEdgeMapFloat = (float**)BaseImage::CreateMatrix(m_iColumns+2, m_iRows+2, -1, -1, 
+                                                              sizeof(float), &tempPointerOffset); // float type edge map
+    AllocateMemoryForZC(m_iColumns+2, m_iRows+2, -1, -1); // Second order derivative
+
+    m_ppResult = (unsigned char**)BaseImage::CreateMatrix(m_iColumns+(m_iLoGSize-1), m_iRows+(m_iLoGSize-1), 
+                                                          -(m_iLoGSize-1)/2, -(m_iLoGSize-1)/2, 
+                                                          sizeof(unsigned char), &m_lPointerOffsetForResult);
     if(m_bSaveAsRaw)
     {
-        m_ppRawResult = (unsigned char**)CreateMatrix(m_iColumns+(m_iLoGSize-1), m_iRows+(m_iLoGSize-1), -(m_iLoGSize-1)/2, -(m_iLoGSize-1)/2, sizeof(unsigned char), &m_lPointerOffsetForResult);
+        m_ppRawResult = (unsigned char**)CreateMatrix(m_iColumns+(m_iLoGSize-1), m_iRows+(m_iLoGSize-1), 
+                                                      -(m_iLoGSize-1)/2, -(m_iLoGSize-1)/2, 
+                                                      sizeof(unsigned char), &m_lPointerOffsetForResult);
     }
 
     if(m_fLowerThreshold > m_fUpperThreshold)
@@ -102,7 +111,40 @@ void LoGEdge::Filter(unsigned char** input, int col, int row)
             {
                 min = temp;
             }
-            ppEdgeMapFloat[i][j] = temp;
+            m_ppSecondDerivative[i][j] = temp;
+        }
+    }
+
+    FindZeroCross(col, row, tempEdge);
+
+    for(i=0;i<row;i++)
+    {
+        for(j=0;j<col;j++)
+        {
+            if( tempEdge[i][j]==0 )
+            {
+                float max = 0.0, min = 0.0;
+                for(int x=-1;x<2;x++)
+                {
+                    for(int y=-1;y<2;y++)
+                    {
+                        if(m_ppSecondDerivative[i+x][j+y]>max)
+                        {
+                            max = m_ppSecondDerivative[i+x][j+y];
+                        }
+
+                        if(m_ppSecondDerivative[i+x][j+y]<min)
+                        {
+                            min = m_ppSecondDerivative[i+x][j+y];
+                        }
+                    }
+                }
+                ppEdgeMapFloat[i][j] = (max-min);
+            }
+            else
+            {
+                ppEdgeMapFloat[i][j] = 0;
+            }
         }
     }
 
@@ -112,7 +154,8 @@ void LoGEdge::Filter(unsigned char** input, int col, int row)
 		{
 			for(j=0;j<col;j++)
 			{
-				m_ppRawResult[i][j] = (unsigned char)(255.0-(ppEdgeMapFloat[i][j]/(max-min)*255.0)); // Edge is black
+				//m_ppRawResult[i][j] = (unsigned char)(255.0-(ppEdgeMapFloat[i][j]/(max-min)*255.0)); // Edge is black
+                m_ppRawResult[i][j] = tempEdge[i][j];
 			}
 		}
 	}
@@ -137,15 +180,18 @@ void LoGEdge::Filter(unsigned char** input, int col, int row)
 	}
 	Resolveambiguity(); // Resolve maybe-pixels
 
-    tempEdge += tempPointerOffset;
     if(tempEdge != NULL)
     {
+        tempEdge += tempPointerOffset;
         free(tempEdge);
+        tempEdge = NULL;
     }
-	ppEdgeMapFloat += tempPointerOffset;
+	
     if(ppEdgeMapFloat != NULL)
     {
+        ppEdgeMapFloat += tempPointerOffset;
         free(ppEdgeMapFloat);
+        ppEdgeMapFloat = NULL;
     }
 }
 

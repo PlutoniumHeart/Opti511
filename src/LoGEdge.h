@@ -6,9 +6,10 @@
 #include <cmath>
 #include <vector>
 #include "BaseImage.h"
+#include "ZeroCross.h"
 
 
-class LoGEdge : BaseImage
+class LoGEdge : public BaseImage, public ZeroCross
 {
 public:
     LoGEdge(std::string filename, float sigma);
