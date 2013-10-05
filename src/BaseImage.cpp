@@ -18,7 +18,7 @@ BaseImage::BaseImage(std::string filename, int startCol, int startRow)
 		m_Filename = filename;
 	}
 
-	m_ImageFile.open(filename, std::ios::in|std::ios::binary);
+	m_ImageFile.open(filename.c_str(), std::ios::in|std::ios::binary);
 	if(m_ImageFile.is_open())
 	{
 		if(ReadHeader(255) < 0)
@@ -144,7 +144,7 @@ void** BaseImage::CreateMatrix(int col, int row, int startCol, int startRow, int
 
 void BaseImage::WriteToFile(std::string filename, unsigned char** input, int startCol, int startRow, int col, int row)
 {
-    std::fstream file(filename, std::ios::out|std::ios::binary);
+    std::fstream file(filename.c_str(), std::ios::out|std::ios::binary);
     if(file.is_open())
     {
         file<<"P5"<<std::endl;
