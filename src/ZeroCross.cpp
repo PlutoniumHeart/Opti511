@@ -40,14 +40,14 @@ void ZeroCross::FindZeroCross(int col, int row, unsigned char** output)
             {
                 if( GetSign(m_ppSecondDerivative[i][j]) == GetSign(m_ppSecondDerivative[i-1][j-1]) )
                 {
-                    if( abs(m_ppSecondDerivative[i][j]) <= abs(m_ppSecondDerivative[i+1][j+1]) )
+                    if( std::abs(m_ppSecondDerivative[i][j]) <= std::abs(m_ppSecondDerivative[i+1][j+1]) )
                     {
                         output[i][j] = 0; // Black edge
                     }
                 }
                 else
                 {
-                    if( abs(m_ppSecondDerivative[i][j]) <= abs(m_ppSecondDerivative[i-1][j-1]) )
+                    if( std::abs(m_ppSecondDerivative[i][j]) <= std::abs(m_ppSecondDerivative[i-1][j-1]) )
                     {
                         output[i][j] = 0; // Black edge
                     }
@@ -57,14 +57,14 @@ void ZeroCross::FindZeroCross(int col, int row, unsigned char** output)
             {
                 if( GetSign(m_ppSecondDerivative[i][j]) == GetSign(m_ppSecondDerivative[i][j-1]) )
                 {
-                    if( abs(m_ppSecondDerivative[i][j]) <= abs(m_ppSecondDerivative[i][j+1]) )
+                    if( std::abs(m_ppSecondDerivative[i][j]) <= std::abs(m_ppSecondDerivative[i][j+1]) )
                     {
                         output[i][j] = 0; // Black edge
                     }
                 }
                 else
                 {
-                    if( abs(m_ppSecondDerivative[i][j]) <= abs(m_ppSecondDerivative[i][j+1]) )
+                    if( std::abs(m_ppSecondDerivative[i][j]) <= std::abs(m_ppSecondDerivative[i][j+1]) )
                     {
                         output[i][j] = 0; // Black edge
                     }
@@ -74,14 +74,14 @@ void ZeroCross::FindZeroCross(int col, int row, unsigned char** output)
             {
                 if( GetSign(m_ppSecondDerivative[i][j]) == GetSign(m_ppSecondDerivative[i-1][j+1]) )
                 {
-                    if( abs(m_ppSecondDerivative[i][j]) <= abs(m_ppSecondDerivative[i+1][j-1]) )
+                    if( std::abs(m_ppSecondDerivative[i][j]) <= std::abs(m_ppSecondDerivative[i+1][j-1]) )
                     {
                         output[i][j] = 0; // Black edge
                     }
                 }
                 else
                 {
-                    if( abs(m_ppSecondDerivative[i][j]) <= abs(m_ppSecondDerivative[i-1][j+1]) )
+                    if( std::abs(m_ppSecondDerivative[i][j]) <= std::abs(m_ppSecondDerivative[i-1][j+1]) )
                     {
                         output[i][j] = 0; // Black edge
                     }
@@ -91,14 +91,14 @@ void ZeroCross::FindZeroCross(int col, int row, unsigned char** output)
             {
                 if( GetSign(m_ppSecondDerivative[i][j]) == GetSign(m_ppSecondDerivative[i-1][j]) )
                 {
-                    if( abs(m_ppSecondDerivative[i][j]) <= abs(m_ppSecondDerivative[i+1][j]) )
+                    if( std::abs(m_ppSecondDerivative[i][j]) <= std::abs(m_ppSecondDerivative[i+1][j]) )
                     {
                         output[i][j] = 0; // Black edge
                     }
                 }
                 else
                 {
-                    if( abs(m_ppSecondDerivative[i][j]) <= abs(m_ppSecondDerivative[i-1][j]) )
+                    if( std::abs(m_ppSecondDerivative[i][j]) <= std::abs(m_ppSecondDerivative[i-1][j]) )
                     {
                         output[i][j] = 0; // Black edge
                     }

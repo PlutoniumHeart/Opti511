@@ -35,7 +35,7 @@ BaseImage::BaseImage(std::string filename, int startCol, int startRow)
         {
             m_ImageFile.read((char*)&m_ppImageMatrix[i][0], m_iColumns);
         }
-        Reflect<unsigned char>(m_iColumns, m_iRows, abs(startCol), m_ppImageMatrix);
+        Reflect<unsigned char>(m_iColumns, m_iRows, std::abs(startCol), m_ppImageMatrix);
 	}
 	else
 	{
@@ -150,7 +150,7 @@ void BaseImage::WriteToFile(std::string filename, unsigned char** input, int sta
         file<<"P5"<<std::endl;
         file<<col<<" "<<row<<std::endl;
         file<<"255"<<std::endl;
-        for(int i=startRow;i<m_iRows+abs(startCol);i++)
+        for(int i=startRow;i<m_iRows+std::abs(startCol);i++)
         {
             file.write((char*)&input[i][startCol], col);
         }
