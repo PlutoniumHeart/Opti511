@@ -27,7 +27,7 @@ bool ArgumentParsing::Parse(int argc, char** argv)
 
     while(argCount<argc)
     {
-        if(strcmp(argv[argCount], "-upper") == 0)
+        if(strncmp(argv[argCount], "-upper", 6) == 0)
         {
             stringTempName = argv[argCount];
             argCount++;
@@ -38,7 +38,7 @@ bool ArgumentParsing::Parse(int argc, char** argv)
             ss.clear();
             argCount++;
         }
-        else if(strcmp(argv[argCount], "-lower") == 0)
+        else if(strncmp(argv[argCount], "-lower", 6) == 0)
         {
             stringTempName = argv[argCount];
             argCount++;
@@ -49,7 +49,7 @@ bool ArgumentParsing::Parse(int argc, char** argv)
             ss.clear();
             argCount++;
         }
-        else if(strcmp(argv[argCount], "-i") == 0)
+        else if(strncmp(argv[argCount], "-i", 2) == 0)
         {
             stringTempName = argv[argCount];
             argCount++;
@@ -57,7 +57,7 @@ bool ArgumentParsing::Parse(int argc, char** argv)
             m_StringTypeInputs.insert(std::pair<std::string, std::string>(stringTempName, stringTemp));
             argCount++;
         }
-        else if(strcmp(argv[argCount], "-o") == 0)
+        else if(strncmp(argv[argCount], "-o", 2) == 0)
         {
             stringTempName = argv[argCount];
             argCount++;
@@ -65,7 +65,7 @@ bool ArgumentParsing::Parse(int argc, char** argv)
             m_StringTypeInputs.insert(std::pair<std::string, std::string>(stringTempName, stringTemp));
             argCount++;
         }
-        else if(strcmp(argv[argCount], "-sigma") == 0)
+        else if(strncmp(argv[argCount], "-sigma", 6) == 0)
         {
             stringTempName = argv[argCount];
             argCount++;
@@ -76,7 +76,7 @@ bool ArgumentParsing::Parse(int argc, char** argv)
             ss.clear();
             argCount++;
         }
-        else if(strcmp(argv[argCount], "-saveOriginalEdgeMap") == 0)
+        else if(strncmp(argv[argCount], "-saveOriginalEdgeMap", 20) == 0)
         {
             stringTempName = argv[argCount];
             argCount++;
