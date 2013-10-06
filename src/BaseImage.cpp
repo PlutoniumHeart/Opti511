@@ -157,6 +157,10 @@ void BaseImage::WriteToFile(std::string filename, unsigned char** input, int sta
         for(int i=startRow;i<m_iRows+std::abs(startCol);i++)
         {
             file.write((char*)&input[i][startCol], col);
+            if(i==0)
+            {
+                std::cout<<(int)input[i][0]<<std::endl;
+            }
         }
     }
     else
