@@ -175,7 +175,6 @@ void SobelEdge::Filter(unsigned char** input, int col, int row)
 #ifdef _DEBUG
     std::cout<<"Edge Pixels: "<<m_statistic<<std::endl;
 #endif
-    std::cout<<(int)m_ppImageMatrix[i][0]<<std::endl;
 }
 
 

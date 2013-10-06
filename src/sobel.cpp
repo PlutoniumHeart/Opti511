@@ -5,14 +5,6 @@
 
 int main(int argc, char** argv)
 {
-    if(O32_HOST_ORDER == O32_LITTLE_ENDIAN)
-    {
-        std::cout<<"System is little endian."<<std::endl;
-    }
-    else
-    {
-        std::cout<<"System is big endian."<<std::endl;
-    }
     ArgumentParsing* parser = new ArgumentParsing(8);
 	if(!parser->Parse(argc, argv))
 	{

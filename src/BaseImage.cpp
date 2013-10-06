@@ -34,10 +34,6 @@ BaseImage::BaseImage(std::string filename, int startCol, int startRow)
         for(int i=0;i<m_iRows;i++)
         {
             m_ImageFile.read((char*)&m_ppImageMatrix[i][0], m_iColumns);
-            if(i==0)
-            {
-                std::cout<<(int)m_ppImageMatrix[i][0]<<std::endl;
-            }
         }
         Reflect<unsigned char>(m_iColumns, m_iRows, std::abs(startCol), m_ppImageMatrix);
 	}
@@ -157,10 +153,6 @@ void BaseImage::WriteToFile(std::string filename, unsigned char** input, int sta
         for(int i=startRow;i<m_iRows+std::abs(startCol);i++)
         {
             file.write((char*)&input[i][startCol], col);
-            if(i==0)
-            {
-                std::cout<<(int)input[i][0]<<std::endl;
-            }
         }
     }
     else

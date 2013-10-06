@@ -52,8 +52,8 @@ private:
     unsigned char** m_ppEdgeMap;
     unsigned char** m_ppOriginalEdgeMap;
     long long m_lPointerOffset;
-    char m_SobelOperator1[3][3];
-    char m_SobelOperator2[3][3];
+    short m_SobelOperator1[3][3];
+    short m_SobelOperator2[3][3];
     float m_fUpperThreshold;
 	float m_fLowerThreshold;
 	bool m_bSaveAsOriginal;
