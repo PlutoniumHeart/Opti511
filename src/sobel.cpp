@@ -16,7 +16,6 @@ int main(int argc, char** argv)
 
     SobelFilter->SetUpperThreshold(parser->LookupFloatType("-upper"));
     SobelFilter->SetLowerThreshold(parser->LookupFloatType("-lower"));
-    std::cout<<"-upper"<<SobelFilter->GetUpperThreshold()<<"-lower"<<SobelFilter->GetLowerThreshold()<<std::endl;
     if(parser->LookupStringType("-saveOriginalEdgeMap") != "")
     {
         SobelFilter->SaveAsOriginal(true);
