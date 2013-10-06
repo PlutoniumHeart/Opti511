@@ -11,6 +11,7 @@ add_executable(Sobel src/sobel.cpp
                      src/SobelEdge.cpp
                      src/ArgumentParsing.h
                      src/ArgumentParsing.cpp
+                     src/Utils.h
 )
 
 add_executable(LoG src/LoG.cpp
@@ -22,4 +23,5 @@ add_executable(LoG src/LoG.cpp
                    src/ZeroCross.cpp
                    src/ArgumentParsing.h
                    src/ArgumentParsing.cpp
+                   src/Utils.h
 )
