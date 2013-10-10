@@ -31,6 +31,8 @@ add_executable(LoG src/LoG.cpp
 add_executable(Kittler src/Kittler.cpp
                        src/BaseImage.h
                        src/BaseImage.cpp
+                       src/Histogram.h
+                       src/Histogram.cpp
                        src/KittlerThreshold.h
                        src/KittlerThreshold.cpp
                        src/ArgumentParsing.h
