@@ -35,7 +35,10 @@ BaseImage::BaseImage(std::string filename, int startCol, int startRow)
         {
             m_ImageFile.read((char*)&m_ppImageMatrix[i][0], m_iColumns);
         }
-        Reflect<unsigned char>(m_iColumns, m_iRows, std::abs(startCol), m_ppImageMatrix);
+        if(startCol!=0)
+        {
+            Reflect<unsigned char>(m_iColumns, m_iRows, std::abs(startCol), m_ppImageMatrix);
+        }
 	}
 	else
 	{

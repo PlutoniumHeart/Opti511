@@ -11,6 +11,11 @@ int main(int argc, char** argv)
         return -1;
     }
 
+    KittlerThreshold* threshold = new KittlerThreshold(parser->LookupStringType("-i"));
+
+    threshold->Filter();
+
     delete parser;
+    delete threshold;
     return 0;
 }
