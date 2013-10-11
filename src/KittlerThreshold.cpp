@@ -13,6 +13,12 @@ KittlerThreshold::KittlerThreshold(std::string fileName)
 
 KittlerThreshold::~KittlerThreshold()
 {
+    if(m_ppResult != NULL)
+    {
+        m_ppResult + m_lPointerOffsetForResult;
+        free(m_ppResult);
+        m_ppResult = NULL;
+    }
 }
 
 
