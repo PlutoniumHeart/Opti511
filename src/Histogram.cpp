@@ -3,6 +3,7 @@
 
 Histogram::Histogram()
     : m_usHisto(NULL)
+    , m_dP(NULL)
     , m_lTotal(0)
 {
 }
@@ -15,6 +16,12 @@ Histogram::~Histogram()
         delete [] m_usHisto;
         m_usHisto = NULL;
     }
+
+    if(m_dP!=NULL)
+    {
+        delete [] m_dP;
+        m_dP = NULL;
+    }
 }
 
 
@@ -23,6 +30,8 @@ void Histogram::CreateHisto(unsigned char** input, int col, int row, int size)
     int i = 0, j = 0;
     m_usHisto = new unsigned short[size];
     memset(m_usHisto, 0, size*sizeof(unsigned short));
+    m_dP = new double[size];
+    memset(m_dP, 0, size*sizeof(unsigned short));
 
     for(i=0;i<row;i++)
     {
@@ -32,9 +41,14 @@ void Histogram::CreateHisto(unsigned char** input, int col, int row, int size)
         }
     }
 
-    for(i=0;i<255;i++)
+    for(i=0;i<=UCHAR_MAX;i++)
     {
         m_lTotal += m_usHisto[i];
+    }
+
+    for(i=0;i<=UCHAR_MAX;i++)
+    {
+        m_dP[i] = (double)m_usHisto[i]/m_lTotal;
     }
 }
 
@@ -43,14 +57,12 @@ int Histogram::Mean(int start, int end)
 {
     int i = 0;
     double sum = 0.0;
-    double tot = 0.0;
 
     for(i=start;i<=end;i++)
     {
-        tot += m_usHisto[i];
-        sum += i*m_usHisto[i];
+        sum += i*m_dP[i];
     }
-    return (int)floor(sum/tot);
+    return sum;
 }
 
 
@@ -61,8 +73,8 @@ double Histogram::Q(int t)
 
     for(i=0;i<=t;i++)
     {
-        tot += m_usHisto[i];
+        tot += m_dP[i];
     }
 
-    return tot/m_lTotal;
+    return tot;
 }

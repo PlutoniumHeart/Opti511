@@ -17,6 +17,7 @@ protected:
     double Q(int t);
 protected:
     unsigned short *m_usHisto;
+    double *m_dP;
 private:
     long m_lTotal;
 };
