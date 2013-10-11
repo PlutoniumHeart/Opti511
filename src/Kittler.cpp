@@ -13,7 +13,12 @@ int main(int argc, char** argv)
 
     KittlerThreshold* threshold = new KittlerThreshold(parser->LookupStringType("-i"));
 
+    if(parser->LookupFloatType("-t")!=0)
+    {
+        threshold->SetUserThreshold(parser->LookupFloatType("-t"));
+    }
     threshold->Filter();
+    threshold->SaveResult(parser->LookupStringType("-o"));
 
     delete parser;
     delete threshold;

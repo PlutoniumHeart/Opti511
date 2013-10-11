@@ -21,9 +21,12 @@ public:
 
     void SetColumns(int col);
     void SetRows(int row);
+
+    void SetUserThreshold(unsigned short t);
 private:
     long long m_lPointerOffsetForResult;
     unsigned char** m_ppResult;
+    unsigned short m_usUserThreshold;
 };
 
 
