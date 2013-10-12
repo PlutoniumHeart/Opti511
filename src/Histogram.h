@@ -3,6 +3,8 @@
 
 
 #include <cstdlib>
+#include <cstring>
+#include <climits>
 #include <iostream>
 
 
