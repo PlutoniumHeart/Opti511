@@ -93,16 +93,6 @@ void KittlerThreshold::Filter(unsigned char** input, int col, int row)
     {
         q1 = q1Prev+m_dP[i];
         q2 = 1-q1;
-        /*if(q1 == 0 || q2 == 0)
-        {
-            q1Prev = q1;
-            q2Prev = q2;
-            mu1Prev = mu1;
-            mu2Prev = mu2;
-            var1Prev = var1;
-            var2Prev = var2;
-            continue;
-        }*/
 
         mu1 = (q1Prev*mu1Prev+i*m_dP[i])/q1;
         var1 = (q1Prev*(var1Prev+(mu1Prev-mu1)*(mu1Prev-mu1))+
@@ -112,17 +102,6 @@ void KittlerThreshold::Filter(unsigned char** input, int col, int row)
         var2 = (q2Prev*(var2Prev+(mu2Prev-mu2)*(mu2Prev-mu2))-
                 m_dP[i]*(i-mu2)*(i-mu2))/q2;
 
-        /*if(var1 <= 0 || var2 <= 0)
-        {
-            q1Prev = q1;
-            q2Prev = q2;
-            mu1Prev = mu1;
-            mu2Prev = mu2;
-            var1Prev = var1;
-            var2Prev = var2;
-            continue;
-        }*/
-
         H = (q1*log(var1)+q2*log(var2))/2-q1*log(q1)-q2*log(q2);
         if(H<threshold)
         {
@@ -130,7 +109,7 @@ void KittlerThreshold::Filter(unsigned char** input, int col, int row)
             threshold_i = i;
         }
 #ifdef _DEBUG
-        std::cout<</*i<<": "<<*/H<<std::endl;
+        std::cout<<i<<": "<<H<<std::endl;
 #endif
         q1Prev = q1;
         q2Prev = q2;
