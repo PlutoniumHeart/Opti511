@@ -39,3 +39,13 @@ add_executable(Kittler src/Kittler.cpp
                        src/ArgumentParsing.cpp
                        src/Utils.h
 )
+
+add_executable(Label src/Label.cpp
+                     src/ConnectedComponentsLabelling.h
+                     src/ConnectedComponentsLabelling.cpp
+                     src/BaseImage.h
+                     src/BaseImage.cpp
+                     src/ArgumentParsing.h
+                     src/ArgumentParsing.cpp
+                     src/Utils.h
+)
