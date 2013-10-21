@@ -4,7 +4,10 @@
 ConnectedComponentsLabelling::ConnectedComponentsLabelling(std::string fileName)
     : BaseImage(fileName, -1, -1)
     , m_lPointerOffsetForResult(0)
+    , m_lPointerOffsetForWriting(0)
     , m_ppResult(NULL)
+    , m_bScaleUChar(false)
+    , m_iNumOfObject(0)
     , m_fg(0)
 {
 }
@@ -17,6 +20,13 @@ ConnectedComponentsLabelling::~ConnectedComponentsLabelling()
         m_ppResult += m_lPointerOffsetForResult;
         free(m_ppResult);
         m_ppResult = NULL;
+    }
+
+    if(m_ppForWriting != NULL)
+    {
+        m_ppForWriting += m_lPointerOffsetForWriting;
+        free(m_ppForWriting);
+        m_ppForWriting = NULL;
     }
 }
 
@@ -39,7 +49,8 @@ void ConnectedComponentsLabelling::Filter(unsigned char** input, int col, int ro
     bool changed = false;
     int marker = 1;
 
-    m_ppResult = (long**)BaseImage::CreateMatrix(m_iColumns+2, m_iRows+2, -1, -1, sizeof(long), &m_lPointerOffsetForResult);
+    m_ppResult = (float**)BaseImage::CreateMatrix(m_iColumns+2, m_iRows+2, -1, -1, sizeof(float), &m_lPointerOffsetForResult);
+    m_ppForWriting = (unsigned char**)BaseImage::CreateMatrix(m_iColumns+2, m_iRows+2, -1, -1, sizeof(unsigned char), &m_lPointerOffsetForWriting);
     for(i=-1;i<=row;i++)
     {
         for(j=-1;j<=col;j++)
@@ -48,6 +59,7 @@ void ConnectedComponentsLabelling::Filter(unsigned char** input, int col, int ro
         }
     }
 
+    // Initial label assignment
     for(i=0;i<row;i++)
     {
         for(j=0;j<col;j++)
@@ -76,11 +88,13 @@ void ConnectedComponentsLabelling::Filter(unsigned char** input, int col, int ro
         }
     }
 
+    // The do loop
     do
     {
+#ifdef _DEBUG
         std::cout<<"Iteration count: "<<count++<<std::endl;
+#endif
         changed = false;
-//        marker = 1;
 
         // Top down, left to right
         for(i=0;i<row;i++)
@@ -88,9 +102,8 @@ void ConnectedComponentsLabelling::Filter(unsigned char** input, int col, int ro
             for(j=0;j<col;j++)
             {
                 int m;
-                if(input[i][j]==0)
+                if(input[i][j]==m_fg)
                 {
-//                    m_ppResult[i][j] = marker++;
                     m = m_ppResult[i][j];
                     for(int x=-1;x<=1;x++)
                     {
@@ -139,6 +152,21 @@ void ConnectedComponentsLabelling::Filter(unsigned char** input, int col, int ro
         }
     } while(changed);
 
+    Reorder(input, col, row);
+
+    if(m_bScaleUChar)
+    {
+        ScaleToUChar(input, col, row);
+    }
+
+    for(i=0;i<row;i++)
+    {
+        for(j=0;j<col;j++)
+        {
+            m_ppForWriting[i][j] = m_ppResult[i][j];
+        }
+    }
+
 #ifdef _DEBUG
     std::fstream debugFile;
     debugFile.open("DebugImage.txt", std::ios::out|std::ios::binary);
@@ -148,13 +176,56 @@ void ConnectedComponentsLabelling::Filter(unsigned char** input, int col, int ro
         {
             for(j=0;j<m_iColumns;j++)
             {
-                debugFile<<(int)m_ppResult[i][j]<<" ";
+                debugFile<<(int)m_ppResult[i][j]<<", ";
             }
             debugFile<<std::endl;
         }
     }
     debugFile.close();
 #endif
+}
+
+
+void ConnectedComponentsLabelling::Reorder(unsigned char** input, int col, int row)
+{
+    int i = 0, j = 0, count = 1;
+    std::map<int, int> label;
+
+    for(i=0;i<row;i++)
+    {
+        for(j=0;j<col;j++)
+        {
+            if(input[i][j]==m_fg)
+            {
+                if(label[m_ppResult[i][j]]==0)
+                {
+                    label[m_ppResult[i][j]] = count;
+                    m_ppResult[i][j] = count++;
+                }
+                else
+                {
+                    m_ppResult[i][j] = label[m_ppResult[i][j]];
+                }
+            }
+        }
+    }
+
+    m_iNumOfObject = label.size();
+}
+
+
+void ConnectedComponentsLabelling::ScaleToUChar(unsigned char** input, int col, int row)
+{
+    int i = 0, j = 0, count = 1;
+
+    for(i=0;i<row;i++)
+    {
+        for(j=0;j<col;j++)
+        {
+            float temp = (float)(m_ppResult[i][j]/m_iNumOfObject)*255.0;
+            m_ppResult[i][j] = temp;
+        }
+    }
 }
 
 
@@ -166,7 +237,7 @@ void ConnectedComponentsLabelling::SaveResult(std::string filename)
 
 void ConnectedComponentsLabelling::SaveResult(std::string filename, int col, int row)
 {
-//    WriteToFile(filename, m_ppResult, 0, 0, col, row);
+    WriteToFile(filename, m_ppForWriting, 0, 0, col, row);
 }
 
 
@@ -185,4 +256,10 @@ void ConnectedComponentsLabelling::SetRows(int row)
 void ConnectedComponentsLabelling::SetForeGround(unsigned char fg)
 {
     m_fg = fg;
+}
+
+
+void ConnectedComponentsLabelling::SetScaleToUChar(bool b)
+{
+    m_bScaleUChar = b;
 }

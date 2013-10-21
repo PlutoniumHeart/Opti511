@@ -25,6 +25,9 @@ bool ArgumentParsing::Parse(int argc, char** argv)
         return false;
     }
 
+    m_fFloatTypeInputs.insert(std::pair<std::string, float>("-0", -1.0));
+    m_fFloatTypeInputs.insert(std::pair<std::string, float>("-s", 0.0));
+
     while(argCount<argc)
     {
         if(strncmp(argv[argCount], "-upper", 6) == 0)
@@ -82,6 +85,42 @@ bool ArgumentParsing::Parse(int argc, char** argv)
             argCount++;
             stringTemp = argv[argCount];
             m_StringTypeInputs.insert(std::pair<std::string, std::string>(stringTempName, stringTemp));
+            argCount++;
+        }
+        else if(strncmp(argv[argCount], "-0", 2) == 0)
+        {
+            if(LookupFloatType("-1")!=0)
+            {
+                std::cerr<<"\"-1\" parameter cannot be used together with \"-0\""<<std::endl;
+                return false;
+            }
+            stringTempName = argv[argCount];
+            std::map<std::string, float>::iterator itr = m_fFloatTypeInputs.find("-0");
+            if(itr!=m_fFloatTypeInputs.end())
+            {
+                itr->second = 0;
+            }
+            argCount++;
+        }
+        else if(strncmp(argv[argCount], "-1", 2) == 0)
+        {
+            if(LookupFloatType("-0")!=0)
+            {
+                std::cerr<<"\"-0\" parameter cannot be used together with \"-1\""<<std::endl;
+                return false;
+            }
+            stringTempName = argv[argCount];
+            m_fFloatTypeInputs.insert(std::pair<std::string, float>(stringTempName, 255.0));
+            argCount++;
+        }
+        else if(strncmp(argv[argCount], "-s", 2) == 0)
+        {
+            stringTempName = argv[argCount];
+            std::map<std::string, float>::iterator itr = m_fFloatTypeInputs.find("-s");
+            if(itr!=m_fFloatTypeInputs.end())
+            {
+                itr->second = 1.0;
+            }
             argCount++;
         }
         else

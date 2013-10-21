@@ -13,12 +13,23 @@ int main(int argc, char** argv)
 
     ConnectedComponentsLabelling* LabellingFilter = new ConnectedComponentsLabelling(parser->LookupStringType("-i"));
 
+    if(parser->LookupFloatType("-0")==0)
+    {
+        LabellingFilter->SetForeGround(parser->LookupFloatType("-0"));
+    }
+    else
+    {
+        LabellingFilter->SetForeGround(parser->LookupFloatType("-1"));
+    }
+
+    LabellingFilter->SetScaleToUChar(parser->LookupFloatType("-s"));
+
     LabellingFilter->Filter();
 
-//    if(parser->LookupStringType("-o")!="")
-//    {
-//        LabellingFilter->SaveResult(parser->LookupStringType("-o"));
-//    }
+    if(parser->LookupStringType("-o") != "")
+    {
+        LabellingFilter->SaveResult(parser->LookupStringType("-o"));
+    }
 
     delete LabellingFilter;
     delete parser;

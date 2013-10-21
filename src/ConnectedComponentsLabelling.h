@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <map>
 #include "BaseImage.h"
 
 
@@ -25,12 +26,19 @@ public:
     void SetRows(int row);
 
     void SetForeGround(unsigned char fg);
+    void SetScaleToUChar(bool b);
 private:
-    void Reorder();
+    void Reorder(unsigned char** input, int col, int row);
+    void ScaleToUChar(unsigned char** input, int col, int row);
 private:
     unsigned char m_fg;
+    bool m_bScaleUChar;
+    int m_iNumOfObject;
     long long m_lPointerOffsetForResult;
-    long** m_ppResult;
+    long long m_lPointerOffsetForWriting;
+    float** m_ppResult;
+    unsigned char** m_ppForWriting;
+
 };
 
 
