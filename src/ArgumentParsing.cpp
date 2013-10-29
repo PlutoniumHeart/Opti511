@@ -104,7 +104,8 @@ bool ArgumentParsing::Parse(int argc, char** argv)
         }
         else if(strncmp(argv[argCount], "-1", 2) == 0)
         {
-            if(LookupFloatType("-0")!=0)
+            float temp = LookupFloatType("-0");
+            if(LookupFloatType("-0")==0)
             {
                 std::cerr<<"\"-0\" parameter cannot be used together with \"-1\""<<std::endl;
                 return false;

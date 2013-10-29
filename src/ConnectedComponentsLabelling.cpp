@@ -65,7 +65,7 @@ void ConnectedComponentsLabelling::Filter(unsigned char** input, int col, int ro
         for(j=0;j<col;j++)
         {
             int m;
-            if(input[i][j]==0)
+            if(input[i][j]==m_fg)
             {
                 m_ppResult[i][j] = marker++;
                 m = m_ppResult[i][j];
