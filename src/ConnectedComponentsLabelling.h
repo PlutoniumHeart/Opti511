@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <climits>
 #include "BaseImage.h"
 
 
