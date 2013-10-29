@@ -30,6 +30,7 @@ public:
 private:
     void Reorder(unsigned char** input, int col, int row);
     void ScaleToUChar(unsigned char** input, int col, int row);
+    void InverseResult(int col, int row);
 private:
     unsigned char m_fg;
     bool m_bScaleUChar;

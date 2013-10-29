@@ -159,6 +159,8 @@ void ConnectedComponentsLabelling::Filter(unsigned char** input, int col, int ro
         ScaleToUChar(input, col, row);
     }
 
+    InverseResult(col, row);
+
     for(i=0;i<row;i++)
     {
         for(j=0;j<col;j++)
@@ -224,6 +226,19 @@ void ConnectedComponentsLabelling::ScaleToUChar(unsigned char** input, int col, 
         {
             float temp = (float)(m_ppResult[i][j]/m_iNumOfObject)*255.0;
             m_ppResult[i][j] = temp;
+        }
+    }
+}
+
+void ConnectedComponentsLabelling::InverseResult(int col, int row)
+{
+    int i = 0, j = 0;
+
+    for(i=0;i<row;i++)
+    {
+        for(j=0;j<col;j++)
+        {
+            m_ppResult[i][j] = UCHAR_MAX - m_ppResult[i][j];
         }
     }
 }
