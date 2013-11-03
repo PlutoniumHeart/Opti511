@@ -3,3 +3,4 @@ build_qt
 CMakeLists.txt.user
 *.cpp~
 *.h~
+TAGS
