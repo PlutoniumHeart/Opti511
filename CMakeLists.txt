@@ -4,48 +4,50 @@ project(Opti532)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 
+include_directories(src/Include/)
+
 add_executable(Sobel src/sobel.cpp
-                     src/BaseImage.h
+                     src/Include/BaseImage.h
                      src/BaseImage.cpp
-                     src/NonMaxSuppression.h
+                     src/Include/NonMaxSuppression.h
                      src/NonMaxSuppression.cpp
-                     src/SobelEdge.h
+                     src/Include/SobelEdge.h
                      src/SobelEdge.cpp
-                     src/ArgumentParsing.h
+                     src/Include/ArgumentParsing.h
                      src/ArgumentParsing.cpp
-                     src/Utils.h
+                     src/Include/Utils.h
 )
 
 add_executable(LoG src/LoG.cpp
-                   src/BaseImage.h
+                   src/Include/BaseImage.h
                    src/BaseImage.cpp
-                   src/LoGEdge.h
+                   src/Include/LoGEdge.h
                    src/LoGEdge.cpp
-                   src/ZeroCross.h
+                   src/Include/ZeroCross.h
                    src/ZeroCross.cpp
-                   src/ArgumentParsing.h
+                   src/Include/ArgumentParsing.h
                    src/ArgumentParsing.cpp
-                   src/Utils.h
+                   src/Include/Utils.h
 )
 
 add_executable(Kittler src/Kittler.cpp
-                       src/BaseImage.h
+                       src/Include/BaseImage.h
                        src/BaseImage.cpp
-                       src/Histogram.h
+                       src/Include/Histogram.h
                        src/Histogram.cpp
-                       src/KittlerThreshold.h
+                       src/Include/KittlerThreshold.h
                        src/KittlerThreshold.cpp
-                       src/ArgumentParsing.h
+                       src/Include/ArgumentParsing.h
                        src/ArgumentParsing.cpp
-                       src/Utils.h
+                       src/Include/Utils.h
 )
 
 add_executable(Label src/Label.cpp
-                     src/ConnectedComponentsLabelling.h
+                     src/Include/ConnectedComponentsLabelling.h
                      src/ConnectedComponentsLabelling.cpp
-                     src/BaseImage.h
+                     src/Include/BaseImage.h
                      src/BaseImage.cpp
-                     src/ArgumentParsing.h
+                     src/Include/ArgumentParsing.h
                      src/ArgumentParsing.cpp
-                     src/Utils.h
+                     src/Include/Utils.h
 )
