@@ -51,3 +51,17 @@ add_executable(Label src/Label.cpp
                      src/ArgumentParsing.cpp
                      src/Include/Utils.h
 )
+
+add_executable(Dilation src/Include/BaseImage.h
+                        src/BaseImage.cpp
+			src/Include/ArgumentParsing.h
+			src/ArgumentParsing.cpp
+			src/Dilation.cpp
+)
+
+add_executable(Erosion src/Include/BaseImage.h
+                       src/BaseImage.cpp
+		       src/Include/ArgumentParsing.h
+		       src/ArgumentParsing.cpp
+		       src/Erosion.cpp
+)
