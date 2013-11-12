@@ -10,11 +10,11 @@ BinaryErosion::BinaryErosion(std::string fileName, int width)
 {
     if(width%2 == 0 && width > 0)
     {
-	std::cerr<<"Width for the structuring element is limited to be odd number."<<std::endl;
-	exit(-1);
+        std::cerr<<"Width for the structuring element is limited to be odd number."<<std::endl;
+        exit(-1);
     }
     else
-	m_iBWidth = width;
+        m_iBWidth = width;
 }
 
 
@@ -22,9 +22,9 @@ BinaryErosion::~BinaryErosion()
 {
     if(m_ppResult!=NULL)
     {
-	m_ppResult += m_lPointerOffsetForResult;
-	free(m_ppResult);
-	m_ppResult = NULL;
+        m_ppResult += m_lPointerOffsetForResult;
+        free(m_ppResult);
+        m_ppResult = NULL;
     }
 }
 
@@ -32,9 +32,9 @@ BinaryErosion::~BinaryErosion()
 void BinaryErosion::SetForeGround(unsigned char fg)
 {
     if(fg>0)
-	m_fg = 255;
+        m_fg = 255;
     else
-	m_fg = 0;
+        m_fg = 0;
 }
 
 
@@ -58,27 +58,27 @@ void BinaryErosion::Filter(unsigned char** input, int col, int row)
 
     for(i=0;i<row;i++)
     {
-	for(j=0;j<col;j++)
-	{
-	    m_ppResult[i][j] = m_fg;
-	}
+        for(j=0;j<col;j++)
+        {
+            m_ppResult[i][j] = m_fg;
+        }
     }
     
     for(i=0;i<row;i++)
     {
-	for(j=0;j<col;j++)
-	{
-	    if(input[i][j]==255-m_fg)
-	    {
-		for(x=-(m_iBWidth-1)/2;x<(m_iBWidth-1)/2;x++)
-		{
-		    for(y=-(m_iBWidth-1)/2;y<(m_iBWidth-1)/2;y++)
-		    {
-			m_ppResult[i+x][j+y] = 255-m_fg;
-		    }
-		}
-	    }
-	}
+        for(j=0;j<col;j++)
+        {
+            if(input[i][j]==255-m_fg)
+            {
+                for(x=-(m_iBWidth-1)/2;x<(m_iBWidth-1)/2;x++)
+                {
+                    for(y=-(m_iBWidth-1)/2;y<(m_iBWidth-1)/2;y++)
+                    {
+                        m_ppResult[i+x][j+y] = 255-m_fg;
+                    }
+                }
+            }
+        }
     }
 }
 

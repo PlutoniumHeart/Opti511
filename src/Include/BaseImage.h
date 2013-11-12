@@ -16,39 +16,37 @@
 
 struct PixelLocation
 {
-	int col;
-	int row;
-	PixelLocation(int c, int r)
-	{
-		col = c;
-		row = r;
-	}
+    int col;
+    int row;
+    PixelLocation(int c, int r)
+    {
+	col = c;
+        row = r;
+    }
 };
 
 
 class BaseImage
 {
 public:
-	BaseImage(std::string filename, int startCol, int startRow);
-	virtual ~BaseImage();
+    BaseImage(std::string filename, int startCol, int startRow);
+    virtual ~BaseImage();
 
     static void** CreateMatrix(int col, int row, int startCol, int startRow, int element_size, long long* offset);
     template<typename T> static void Reflect(int col, int row, int amount, T** input);
     void WriteToFile(std::string filename, unsigned char** input, int startCol, int startRow, int col, int row);
     unsigned char** GetImagePointer();
-	int GetColumns();
-	int GetRows();
+    int GetColumns();
+    int GetRows();
 protected:
-    
-protected:
-	std::string m_Filename;
-	std::fstream m_ImageFile;
-	int m_iColumns;
-	int m_iRows;
-	int m_iBpp;
-	unsigned char** m_ppImageMatrix;
+    std::string m_Filename;
+    std::fstream m_ImageFile;
+    int m_iColumns;
+    int m_iRows;
+    int m_iBpp;
+    unsigned char** m_ppImageMatrix;
 private:
-	int ReadHeader(int MaxValue);
+    int ReadHeader(int MaxValue);
 private:
     long long m_lPointerOffset; // Used to keep track of the pointer to the 2D array.
 };

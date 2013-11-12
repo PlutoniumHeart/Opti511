@@ -54,18 +54,18 @@ add_executable(Label src/Label.cpp
 
 add_executable(Dilation src/Include/BaseImage.h
                         src/BaseImage.cpp
-			src/Include/ArgumentParsing.h
-			src/ArgumentParsing.cpp
-			src/Include/BinaryDilation.h
-			src/BinaryDilation.cpp
-			src/Dilation.cpp
+                        src/Include/ArgumentParsing.h
+                        src/ArgumentParsing.cpp
+                        src/Include/BinaryDilation.h
+                        src/BinaryDilation.cpp
+                        src/Dilation.cpp
 )
 
 add_executable(Erosion src/Include/BaseImage.h
                        src/BaseImage.cpp
-		       src/Include/ArgumentParsing.h
-		       src/ArgumentParsing.cpp
-		       src/Include/BinaryErosion.h
-		       src/BinaryErosion.cpp
-		       src/Erosion.cpp
+                       src/Include/ArgumentParsing.h
+                       src/ArgumentParsing.cpp
+                       src/Include/BinaryErosion.h
+                       src/BinaryErosion.cpp
+                       src/Erosion.cpp
 )
