@@ -65,5 +65,7 @@ add_executable(Erosion src/Include/BaseImage.h
                        src/BaseImage.cpp
 		       src/Include/ArgumentParsing.h
 		       src/ArgumentParsing.cpp
+		       src/Include/BinaryErosion.h
+		       src/BinaryErosion.cpp
 		       src/Erosion.cpp
 )

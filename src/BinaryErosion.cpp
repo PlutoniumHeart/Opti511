@@ -1,7 +1,7 @@
-#include "BinaryDilation.h"
+#include "BinaryErosion.h"
 
 
-BinaryDilation::BinaryDilation(std::string fileName, int width)
+BinaryErosion::BinaryErosion(std::string fileName, int width)
     : BaseImage(fileName, (width%2!=0)?-(width-1)/2:0, (width%2!=0)?-(width-1)/2:0)
     , m_iBWidth(0)
     , m_ppResult(NULL)
@@ -18,7 +18,7 @@ BinaryDilation::BinaryDilation(std::string fileName, int width)
 }
 
 
-BinaryDilation::~BinaryDilation()
+BinaryErosion::~BinaryErosion()
 {
     if(m_ppResult!=NULL)
     {
@@ -29,7 +29,7 @@ BinaryDilation::~BinaryDilation()
 }
 
 
-void BinaryDilation::SetForeGround(unsigned char fg)
+void BinaryErosion::SetForeGround(unsigned char fg)
 {
     if(fg>0)
 	m_fg = 255;
@@ -38,19 +38,19 @@ void BinaryDilation::SetForeGround(unsigned char fg)
 }
 
 
-void BinaryDilation::Filter()
+void BinaryErosion::Filter()
 {
     Filter(m_ppImageMatrix);
 }
 
 
-void BinaryDilation::Filter(unsigned char** input)
+void BinaryErosion::Filter(unsigned char** input)
 {
     Filter(input, m_iColumns, m_iRows);
 }
 
 
-void BinaryDilation::Filter(unsigned char** input, int col, int row)
+void BinaryErosion::Filter(unsigned char** input, int col, int row)
 {
     int i = 0, j = 0;
     int x = 0, y = 0;
@@ -60,7 +60,7 @@ void BinaryDilation::Filter(unsigned char** input, int col, int row)
     {
 	for(j=0;j<col;j++)
 	{
-	    m_ppResult[i][j] = 255-m_fg;
+	    m_ppResult[i][j] = m_fg;
 	}
     }
     
@@ -68,13 +68,13 @@ void BinaryDilation::Filter(unsigned char** input, int col, int row)
     {
 	for(j=0;j<col;j++)
 	{
-	    if(input[i][j]==m_fg)
+	    if(input[i][j]==255-m_fg)
 	    {
 		for(x=-(m_iBWidth-1)/2;x<(m_iBWidth-1)/2;x++)
 		{
 		    for(y=-(m_iBWidth-1)/2;y<(m_iBWidth-1)/2;y++)
 		    {
-			m_ppResult[i+x][j+y] = m_fg;
+			m_ppResult[i+x][j+y] = 255-m_fg;
 		    }
 		}
 	    }
@@ -83,13 +83,14 @@ void BinaryDilation::Filter(unsigned char** input, int col, int row)
 }
 
 
-void BinaryDilation::SaveResult(std::string fileName)
+void BinaryErosion
+::SaveResult(std::string fileName)
 {
     SaveResult(fileName, m_iColumns, m_iRows);
 }
 
 
-void BinaryDilation::SaveResult(std::string fileName, int col, int row)
+void BinaryErosion::SaveResult(std::string fileName, int col, int row)
 {
     WriteToFile(fileName, m_ppResult, 0, 0, col, row);
 }
