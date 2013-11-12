@@ -18,10 +18,13 @@ public:
 
     void SaveResult(std::string fileName);
     void SaveResult(std::string fileName, int col, int row);
+
+    void SetForeGround(unsigned char fg);
 private:
     int m_iBWidth;
     unsigned char** m_ppResult;
     long long m_lPointerOffsetForResult;
+    unsigned char m_fg;
 };
 
 

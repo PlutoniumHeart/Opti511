@@ -6,6 +6,7 @@ BinaryDilation::BinaryDilation(std::string fileName, int width)
     , m_iBWidth(0)
     , m_ppResult(NULL)
     , m_lPointerOffsetForResult(0)
+    , m_fg(0)
 {
     if(width%2 == 0 && width > 0)
     {
@@ -25,6 +26,15 @@ BinaryDilation::~BinaryDilation()
 	free(m_ppResult);
 	m_ppResult = NULL;
     }
+}
+
+
+void BinaryDilation::SetForeGround(unsigned char fg)
+{
+    if(fg>0)
+	m_fg = 255;
+    else
+	m_fg = 0;
 }
 
 
@@ -51,21 +61,23 @@ void BinaryDilation::Filter(unsigned char** input, int col, int row)
     {
 	for(j=0;j<col;j++)
 	{
-	    m_ppResult[i][j] = 255;
+	    m_ppResult[i][j] = 255-m_fg;
 	}
     }
+
+    std::cout<<"FG: "<<(int)m_fg<<std::endl;
     
     for(i=0;i<row;i++)
     {
 	for(j=0;j<col;j++)
 	{
-	    if(input[i][j]==0)
+	    if(input[i][j]==m_fg)
 	    {
 		for(x=-(m_iBWidth-1)/2;x<(m_iBWidth-1)/2;x++)
 		{
 		    for(y=-(m_iBWidth-1)/2;y<(m_iBWidth-1)/2;y++)
 		    {
-			m_ppResult[i+x][j+y] = 0; // For now, Dark foreground
+			m_ppResult[i+x][j+y] = m_fg;
 		    }
 		}
 	    }
