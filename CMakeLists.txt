@@ -56,6 +56,8 @@ add_executable(Dilation src/Include/BaseImage.h
                         src/BaseImage.cpp
 			src/Include/ArgumentParsing.h
 			src/ArgumentParsing.cpp
+			src/Include/BinaryDilation.h
+			src/BinaryDilation.cpp
 			src/Dilation.cpp
 )
 

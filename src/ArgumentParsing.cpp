@@ -124,6 +124,17 @@ bool ArgumentParsing::Parse(int argc, char** argv)
             }
             argCount++;
         }
+	else if(strncmp(argv[argCount], "-w", 2) == 0)
+	{
+	    stringTempName = argv[argCount];
+            argCount++;
+            ss<<argv[argCount];
+            ss>>fTemp;
+            m_fFloatTypeInputs.insert(std::pair<std::string, float>(stringTempName, fTemp));
+            ss.str(std::string());
+            ss.clear();
+            argCount++;
+	}
         else
         {
             std::cerr<<"Unknown command line argument!"<<std::endl;
