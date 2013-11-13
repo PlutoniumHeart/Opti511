@@ -35,6 +35,13 @@ BinaryOpening::~BinaryOpening()
 }
 
 
+void BinaryOpening::SetForeGround(unsigned char fg)
+{
+    m_pDilation->SetForeGround(fg);
+    m_pErosion->SetForeGround(fg);
+}
+
+
 void BinaryOpening::Filter()
 {
     Filter(m_ppImageMatrix);

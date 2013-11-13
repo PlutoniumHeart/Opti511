@@ -13,11 +13,10 @@ int main(int argc,char** argv)
 
     BinaryOpening* open = new BinaryOpening(parser->LookupStringType("-i"), parser->LookupFloatType("-w"));
 
-    /*if(parser->LookupFloatType("-0")==0)
+    if(parser->LookupFloatType("-0")==0)
         open->SetForeGround(parser->LookupFloatType("-0"));
     else
         open->SetForeGround(parser->LookupFloatType("-1"));
-    */
 
     open->Filter();
 
