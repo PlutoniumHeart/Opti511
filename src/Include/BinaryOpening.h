@@ -20,7 +20,7 @@ public:
     void SaveResult(std::string fileName, int col, int row);
 
     void SetForeGround(unsigned char fg);
-private:
+protected:
     int m_iBWidth;
     BinaryDilation* m_pDilation;
     BinaryErosion* m_pErosion;

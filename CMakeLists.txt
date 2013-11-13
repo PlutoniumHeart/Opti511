@@ -84,3 +84,18 @@ add_executable(Openning src/Include/BaseImage.h
                         src/BinaryOpening.cpp
                         src/Opening.cpp
 )
+
+add_executable(Closing src/Include/BaseImage.h
+                       src/BaseImage.cpp
+                       src/Include/ArgumentParsing.h
+                       src/ArgumentParsing.cpp
+                       src/Include/BinaryDilation.h
+                       src/BinaryDilation.cpp
+                       src/Include/BinaryErosion.h
+                       src/BinaryErosion.cpp
+                       src/Include/BinaryOpening.h
+                       src/BinaryOpening.cpp
+                       src/Include/BinaryClosing.h
+                       src/BinaryClosing.cpp
+                       src/Closing.cpp
+)
