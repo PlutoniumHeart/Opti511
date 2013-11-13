@@ -30,6 +30,7 @@ class BaseImage
 {
 public:
     BaseImage(std::string filename, int startCol, int startRow);
+    BaseImage(int col, int row, int startCol, int startRow);
     virtual ~BaseImage();
 
     static void** CreateMatrix(int col, int row, int startCol, int startRow, int element_size, long long* offset);

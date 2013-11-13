@@ -1,32 +1,23 @@
-#ifndef BINARYDILATION_H
-#define BINARYDILATION_H
+#ifndef BINARYEROSION_H
+#define BINARYEROSION_H
 
 
 
-#include "BaseImage.h"
+#include "BinaryDilation.h"
 
 
-class BinaryErosion : public BaseImage
+class BinaryErosion : public BinaryDilation
 {
 public:
     BinaryErosion(std::string fileName, int width);
+    BinaryErosion(int col, int row, int width);
     ~BinaryErosion();
 
-    void Filter();
-    void Filter(unsigned char** input);
-    void Filter(unsigned char** input, int col, int row);
-
-    void SaveResult(std::string fileName);
-    void SaveResult(std::string fileName, int col, int row);
-
-    void SetForeGround(unsigned char fg);
-private:
-    int m_iBWidth;
-    unsigned char** m_ppResult;
-    long long m_lPointerOffsetForResult;
-    unsigned char m_fg;
+    virtual void Filter();
+    virtual void Filter(unsigned char** input);
+    virtual void Filter(unsigned char** input, int col, int row);
 };
 
 
 
-#endif //BINARYDILATION_H
+#endif //BINARYEROSION_H

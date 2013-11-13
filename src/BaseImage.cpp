@@ -24,7 +24,9 @@ BaseImage::BaseImage(std::string filename, int startCol, int startRow)
         {
             return;
         }
-        m_ppImageMatrix = (unsigned char**)CreateMatrix(m_iColumns+2*(startCol<0 ? -startCol : 0), m_iRows+2*(startRow<0 ? -startRow : 0), startCol, startRow, sizeof(unsigned char), &m_lPointerOffset);
+        m_ppImageMatrix = (unsigned char**)CreateMatrix(m_iColumns+2*(startCol<0 ? -startCol : 0),
+                          m_iRows+2*(startRow<0 ? -startRow : 0), startCol, startRow, sizeof(unsigned char),
+                          &m_lPointerOffset);
         if(m_ppImageMatrix == NULL)
         {
             std::cerr<<"Failed to allocate memory."<<std::endl;
@@ -45,6 +47,29 @@ BaseImage::BaseImage(std::string filename, int startCol, int startRow)
         exit(-1);
     }
     m_ImageFile.close();
+}
+
+
+BaseImage::BaseImage(int col, int row, int startCol, int startRow)
+    : m_iColumns(col)
+    , m_iRows(row)
+    , m_iBpp(8)
+    , m_ppImageMatrix(NULL)
+    , m_lPointerOffset(0)
+{
+    int i = 0, j = 0;
+    
+    m_ppImageMatrix = (unsigned char**)CreateMatrix(col+2*(startCol<0?-startCol:0),
+                      row+2*(startRow<0?-startRow:0), startCol, startRow, sizeof(unsigned char),
+                      &m_lPointerOffset);
+
+    for(i=startRow;i<row-startRow;i++)
+    {
+        for(j=startCol;j<col-startCol;j++)
+        {
+            m_ppImageMatrix[i][j] = 0;
+        }
+    }
 }
 
 
@@ -109,7 +134,8 @@ int BaseImage::ReadHeader(int MaxValue)
 }
 
 
-void** BaseImage::CreateMatrix(int col, int row, int startCol, int startRow, int element_size, long long* offset)
+void** BaseImage::CreateMatrix(int col, int row, int startCol, int startRow, int element_size,
+                               long long* offset)
 {
     void **p;
     void **temp;
@@ -144,7 +170,8 @@ void** BaseImage::CreateMatrix(int col, int row, int startCol, int startRow, int
 }
 
 
-void BaseImage::WriteToFile(std::string filename, unsigned char** input, int startCol, int startRow, int col, int row)
+void BaseImage::WriteToFile(std::string filename, unsigned char** input, int startCol, int startRow,
+                            int col, int row)
 {
     std::fstream file(filename.c_str(), std::ios::out|std::ios::binary);
     if(file.is_open())

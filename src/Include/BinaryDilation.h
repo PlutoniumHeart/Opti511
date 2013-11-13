@@ -10,17 +10,20 @@ class BinaryDilation : public BaseImage
 {
 public:
     BinaryDilation(std::string fileName, int width);
+    BinaryDilation(int col, int row, int width);
     ~BinaryDilation();
 
-    void Filter();
-    void Filter(unsigned char** input);
-    void Filter(unsigned char** input, int col, int row);
+    virtual void Filter();
+    virtual void Filter(unsigned char** input);
+    virtual void Filter(unsigned char** input, int col, int row);
 
     void SaveResult(std::string fileName);
     void SaveResult(std::string fileName, int col, int row);
 
     void SetForeGround(unsigned char fg);
-private:
+
+    unsigned char** GetResultPointer();
+protected:
     int m_iBWidth;
     unsigned char** m_ppResult;
     long long m_lPointerOffsetForResult;

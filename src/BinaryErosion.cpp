@@ -2,11 +2,20 @@
 
 
 BinaryErosion::BinaryErosion(std::string fileName, int width)
-    : BaseImage(fileName, (width%2!=0)?-(width-1)/2:0, (width%2!=0)?-(width-1)/2:0)
-    , m_iBWidth(0)
-    , m_ppResult(NULL)
-    , m_lPointerOffsetForResult(0)
-    , m_fg(0)
+    : BinaryDilation(fileName, width)
+{
+    if(width%2 == 0 && width > 0)
+    {
+        std::cerr<<"Width for the structuring element is limited to be odd number."<<std::endl;
+        exit(-1);
+    }
+    else
+        m_iBWidth = width;
+}
+
+
+BinaryErosion::BinaryErosion(int col, int row, int width)
+    : BinaryDilation(col, row, width)
 {
     if(width%2 == 0 && width > 0)
     {
@@ -20,21 +29,6 @@ BinaryErosion::BinaryErosion(std::string fileName, int width)
 
 BinaryErosion::~BinaryErosion()
 {
-    if(m_ppResult!=NULL)
-    {
-        m_ppResult += m_lPointerOffsetForResult;
-        free(m_ppResult);
-        m_ppResult = NULL;
-    }
-}
-
-
-void BinaryErosion::SetForeGround(unsigned char fg)
-{
-    if(fg>0)
-        m_fg = 255;
-    else
-        m_fg = 0;
 }
 
 
@@ -80,17 +74,4 @@ void BinaryErosion::Filter(unsigned char** input, int col, int row)
             }
         }
     }
-}
-
-
-void BinaryErosion
-::SaveResult(std::string fileName)
-{
-    SaveResult(fileName, m_iColumns, m_iRows);
-}
-
-
-void BinaryErosion::SaveResult(std::string fileName, int col, int row)
-{
-    WriteToFile(fileName, m_ppResult, 0, 0, col, row);
 }

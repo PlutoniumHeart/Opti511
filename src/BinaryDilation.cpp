@@ -18,6 +18,23 @@ BinaryDilation::BinaryDilation(std::string fileName, int width)
 }
 
 
+BinaryDilation::BinaryDilation(int col, int row, int width)
+    : BaseImage(col, row, -(width-1)/2, -(width-1)/2)
+    , m_iBWidth(0)
+    , m_ppResult(NULL)
+    , m_lPointerOffsetForResult(0)
+    , m_fg(0)
+{
+    if(width%2 == 0 && width > 0)
+    {
+        std::cerr<<"Width for the structuring element is limited to be odd number."<<std::endl;
+        exit(-1);
+    }
+    else
+        m_iBWidth = width;
+}
+
+
 BinaryDilation::~BinaryDilation()
 {
     if(m_ppResult!=NULL)
@@ -35,6 +52,12 @@ void BinaryDilation::SetForeGround(unsigned char fg)
         m_fg = 255;
     else
         m_fg = 0;
+}
+
+
+unsigned char** BinaryDilation::GetResultPointer()
+{
+    return m_ppResult;
 }
 
 
