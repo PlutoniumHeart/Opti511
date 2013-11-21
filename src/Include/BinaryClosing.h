@@ -14,6 +14,9 @@ public:
     virtual void Filter();
     virtual void Filter(unsigned char** input);
     virtual void Filter(unsigned char** input, int col, int row);
+
+    virtual void SaveResult(std::string fileName);
+    virtual void SaveResult(std::string fileName, int col, int row);
 };
 
 

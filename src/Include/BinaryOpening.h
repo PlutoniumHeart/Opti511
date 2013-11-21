@@ -16,8 +16,8 @@ public:
     virtual void Filter(unsigned char** input);
     virtual void Filter(unsigned char** input, int col, int row);
 
-    void SaveResult(std::string fileName);
-    void SaveResult(std::string fileName, int col, int row);
+    virtual void SaveResult(std::string fileName);
+    virtual void SaveResult(std::string fileName, int col, int row);
 
     void SetForeGround(unsigned char fg);
 protected:
