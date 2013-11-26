@@ -93,9 +93,9 @@ void BinaryDilation::Filter(unsigned char** input, int col, int row)
         {
             if(input[i][j]==m_fg)
             {
-                for(x=-(m_iBWidth-1)/2;x<(m_iBWidth-1)/2;x++)
+                for(x=-(m_iBWidth-1)/2;x<=(m_iBWidth-1)/2;x++)
                 {
-                    for(y=-(m_iBWidth-1)/2;y<(m_iBWidth-1)/2;y++)
+                    for(y=-(m_iBWidth-1)/2;y<=(m_iBWidth-1)/2;y++)
                     {
                         m_ppResult[i+x][j+y] = m_fg;
                     }
